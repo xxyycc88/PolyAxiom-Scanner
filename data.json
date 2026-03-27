@@ -1,92 +1,182 @@
 [
     {
         "title": "MicroStrategy sells any Bitcoin by ___ ?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/microstrategy-sell-any-bitcoin-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "Kraken IPO by ___ ?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/kraken-ipo-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "Macron out by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/macron-out-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "UK election called by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/uk-election-called-by?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "China x India military clash by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/china-x-india-military-clash-by-december-31?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "NATO/EU troops fighting in Ukraine by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/natoeu-troops-fighting-in-ukraine-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "Starmer out by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/starmer-out-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "Ukraine recognizes Russian sovereignty over its territory by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/ukraine-recognizes-russian-sovereignty-over-ukrainian-territory-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "Ukraine election called by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/ukraine-election-called-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "Will any country leave NATO by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/will-any-country-leave-nato-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "Ukraine election held by...?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/ukraine-election-held-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
-        "title": "BitBoy convicted?",
-        "odds": 0.0205,
-        "link": "https://polymarket.com/event/bitboy-convicted?r=PolyAxiom",
-        "category": "预测市场"
-    },
-    {
         "title": "Taylor Swift pregnant in 2025?",
-        "odds": 0.0,
+        "odds": 1.0,
         "link": "https://polymarket.com/event/taylor-swift-pregnant-in-2025?r=PolyAxiom",
         "category": "预测市场"
     },
     {
-        "title": "Mike Johnson out as Speaker by...?",
-        "odds": 0.0,
-        "link": "https://polymarket.com/event/mike-johnson-out-as-speaker-by?r=PolyAxiom",
+        "title": "Will Russia capture Kostyantynivka by...?",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/will-russia-capture-kostyantynivka-by?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Spain snap election called by...?",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/spain-snap-election-called-by?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "US x Russia military clash by...?",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/us-x-russia-military-clash-by?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Will Russia invade a NATO country by...?",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/will-russia-invade-a-nato-country-in-2025?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Trump eliminates capital gains tax on crypto by ___?",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/trump-eliminates-capital-gains-tax-on-crypto-in-2025?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Israel and Syria normalize relations by...?",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/israel-and-syria-normalize-relations-in-2025?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Will Russia capture Sumy by...?",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/will-russia-capture-sumy-before-october?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Pump.fun airdrop by ....? ",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/pumpfun-airdop-by?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Hyperliquid airdrop by ....? ",
+        "odds": 1.0,
+        "link": "https://polymarket.com/event/hyperliquid-airdop-by?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "2026 FIFA World Cup: Which countries qualify?",
+        "odds": 0.745,
+        "link": "https://polymarket.com/event/2026-fifa-world-cup-which-countries-qualify?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "What will happen before GTA VI?",
         "odds": 0.545,
         "link": "https://polymarket.com/event/what-will-happen-before-gta-vi?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "2026 NBA Champion",
+        "odds": 0.37,
+        "link": "https://polymarket.com/event/2026-nba-champion?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Harvey Weinstein prison time?",
+        "odds": 0.265,
+        "link": "https://polymarket.com/event/harvey-weinstein-prison-time?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "2026 NHL Stanley Cup Champion ",
+        "odds": 0.115,
+        "link": "https://polymarket.com/event/2026-nhl-stanley-cup-champion?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "GTA VI released before June 2026?",
+        "odds": 0.0195,
+        "link": "https://polymarket.com/event/gta-vi-released-before-june-2026?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "BitBoy convicted?",
+        "odds": 0.019,
+        "link": "https://polymarket.com/event/bitboy-convicted?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Mike Johnson out as Speaker by...?",
+        "odds": 0.01,
+        "link": "https://polymarket.com/event/mike-johnson-out-as-speaker-by?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Will OpenAI launch a consumer hardware product by...?",
+        "odds": 0.002,
+        "link": "https://polymarket.com/event/will-openai-launch-a-consumer-hardware-product-by?r=PolyAxiom",
         "category": "预测市场"
     }
 ]
