@@ -30,7 +30,7 @@
     <main class="max-w-6xl mx-auto px-6 py-10">
         <div id="signals-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="text-slate-500 col-span-full py-20 text-center animate-pulse">
-                ⌛ 正在从全球节点同步实时信号...
+                ⌛ PolyAxiom 正在同步实时信号...
             </div>
         </div>
     </main>
@@ -44,7 +44,7 @@
 
     <script>
         const SUPABASE_URL = 'https://mqitovjowfayunujvpgn.supabase.co'; 
-        const SUPABASE_ANON_KEY = 'sb_publishable_JvLqRPVcS7xpHT-TNatAtQ_xRr6JhkD'; // 网页端必须用 Anon Key
+        const SUPABASE_ANON_KEY = 'sb_publishable_JvLqRPVcS7xpHT-TNatAtQ_xRr6JhkD'; 
         
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -59,16 +59,16 @@
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    container.innerHTML = `<div class="text-slate-500 col-span-full py-20 text-center">AI 正在扫描市场，请稍后刷新...</div>`;
+                    container.innerHTML = `<div class="text-slate-500 col-span-full py-20 text-center">暂无信号，PolyAxiom AI 正在扫描中...</div>`;
                     return;
                 }
 
                 container.innerHTML = data.map(item => `
                     <div class="p-6 rounded-2xl glass-card flex flex-col h-full">
-                        <span class="inline-block w-fit px-2 py-1 rounded-md bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase mb-4 font-mono">Signal Active</span>
+                        <span class="inline-block w-fit px-2 py-1 rounded-md bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase mb-4 font-mono">PolyAxiom Signal</span>
                         <h2 class="text-lg font-bold mb-4 text-slate-100">${item.title}</h2>
                         <p class="text-slate-400 text-sm mb-8 border-l-2 border-slate-700 pl-4 italic">${item.ai_summary}</p>
-                        <a href="${item.referral_link}" target="_blank" class="mt-auto w-full py-3 bg-sky-600 hover:bg-sky-500 text-white text-sm font-bold rounded-xl text-center transition-all">立即查看详情</a>
+                        <a href="${item.referral_link}" target="_blank" class="mt-auto w-full py-3 bg-sky-600 hover:bg-sky-500 text-white text-sm font-bold rounded-xl text-center transition-all">立即参与预测 (PolyAxiom)</a>
                     </div>
                 `).join('');
 
@@ -76,10 +76,10 @@
                 container.innerHTML = `
                     <div class="text-red-400 text-sm col-span-full py-20 text-center glass-card rounded-2xl">
                         <p class="text-lg mb-4">📡 信号同步超时</p>
-                        <p class="text-slate-500 text-xs mb-6">原因: 您的本地网络无法连接至数据节点 (Fetch Error)</p>
+                        <p class="text-slate-500 text-xs mb-6">原因: 本地网络环境受限 (Fetch Error)</p>
                         <div class="inline-flex gap-4">
                             <button onclick="location.reload()" class="px-4 py-2 bg-slate-800 rounded-lg">重试</button>
-                            <a href="https://t.me/XXYY_CC" class="px-4 py-2 bg-sky-900/30 text-sky-400 rounded-lg">联系技术支持</a>
+                            <a href="https://t.me/PolyAxiom" class="px-4 py-2 bg-sky-900/30 text-sky-400 rounded-lg">联系 PolyAxiom 支持</a>
                         </div>
                     </div>`;
             }
