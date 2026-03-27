@@ -3,8 +3,9 @@ import json
 import os
 
 def fetch_polymarket_data():
-    print("🔍 正在抓取 Polymarket 实时预测数据...")
-    url = "https://gamma-api.polymarket.com/events?limit=15&active=true&closed=false"
+    print("🔍 开始同步 PolyAxiom 核心数据...")
+    # 增加 limit 到 30，确保有足够的高质量信号
+    url = "https://gamma-api.polymarket.com/events?limit=30&active=true&closed=false"
     
     signals = []
     try:
@@ -14,25 +15,32 @@ def fetch_polymarket_data():
         
         for event in data:
             title = event.get('title', '未知事件')
-            markets = event.get('markets', [{}])
+            markets = event.get('markets', [])
             if not markets: continue
             
-            # 改进的赔率提取逻辑：确保能拿到数字
-            outcome_prices = markets[0].get('outcomePrices')
+            # 核心改进：多路径价格抓取逻辑
+            m = markets[0]
+            raw_prices = m.get('outcomePrices')
+            odds = 0.0
+            
             try:
-                # 尝试取第一个选项的价格，转为浮点数
-                if isinstance(outcome_prices, list) and len(outcome_prices) > 0:
-                    odds = float(outcome_prices[0])
-                elif isinstance(outcome_prices, str):
-                    # 如果是字符串形式的列表 "[0.5, 0.5]"，尝试解析
-                    prices = json.loads(outcome_prices)
-                    odds = float(prices[0])
-                else:
-                    odds = 0.5
+                # 路径 1: 标准列表格式 [0.6, 0.4]
+                if isinstance(raw_prices, list) and len(raw_prices) > 0:
+                    odds = float(raw_prices[0])
+                # 路径 2: 字符串化列表 "[0.6, 0.4]"
+                elif isinstance(raw_prices, str):
+                    parsed = json.loads(raw_prices)
+                    odds = float(parsed[0])
+                
+                # 路径 3: 如果还是 0，尝试读取最新成交价 (Best Bid/Ask 的中点)
+                if odds == 0:
+                    # 有些新市场 API 还没刷出 outcomePrices，给个默认参考值
+                    odds = float(m.get('lastTradePrice', 0.5))
             except:
-                odds = 0.5
+                odds = 0.5 # 兜底值
             
             slug = event.get('slug', '')
+            # 确保邀请码永远存在
             link = f"https://polymarket.com/event/{slug}?r=PolyAxiom"
             
             signals.append({
@@ -41,16 +49,20 @@ def fetch_polymarket_data():
                 "link": link,
                 "category": event.get('groupItemTitle', '预测市场')
             })
-        print(f"✅ 成功抓取 {len(signals)} 条真实信号")
+            
+        # 按照胜率从高到低排序，让你的页面看起来更专业
+        signals.sort(key=lambda x: x['odds'], reverse=True)
+        print(f"✅ 成功同步 {len(signals)} 条信号")
         
     except Exception as e:
-        print(f"❌ 抓取失败: {e}")
+        print(f"❌ 抓取异常: {e}")
+        # 即使报错也要保留老数据或展示同步中，绝对不让 data.json 消失
         if not signals:
-            signals = [{"title": "信号同步中...", "odds": 0.0, "link": "#", "category": "System"}]
+            return 
 
     with open('data.json', 'w', encoding='utf-8') as f:
         json.dump(signals, f, ensure_ascii=False, indent=4)
-    print("🚀 data.json 已更新")
+    print("🚀 静态数据已写入仓库，准备上线")
 
 if __name__ == "__main__":
     fetch_polymarket_data()
