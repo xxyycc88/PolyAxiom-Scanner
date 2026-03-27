@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyAxiom | 预测市场 Alpha 导航</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { background-color: #020617; color: #f8fafc; font-family: sans-serif; }
+        .glass-card { 
+            background: rgba(30, 41, 59, 0.7); 
+            border: 1px solid rgba(51, 65, 85, 0.5); 
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover { 
+            border-color: #38bdf8; 
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        /* 优化翻译组件样式，使其更符合深色模式 */
+        #google_translate_element { margin-left: 10px; }
+        .goog-te-gadget-simple {
+            background-color: #1e293b !important;
+            border: 1px solid #334155 !important;
+            padding: 4px 8px !important;
+            border-radius: 8px !important;
+            color: #fff !important;
+        }
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0 !important; }
+    </style>
+</head>
+<body class="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
+
+    <nav class="max-w-6xl mx-auto p-6 flex justify-between items-center border-b border-slate-800/50">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center font-bold text-black">P</div>
+            <span class="text-xl font-black tracking-tighter uppercase tracking-widest">PolyAxiom</span>
+        </div>
+        
+        <div class="flex items-center">
+            <span class="text-[10px] text-slate-500 mr-2 uppercase">Translate:</span>
+            <div id="google_translate_element"></div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-10">
+        <div id="signals-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center md:text-left">
+            <div class="text-slate-500 col-span-full py-20">正在调取数据库信号...</div>
+        </div>
+    </main>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'zh-CN', 
+                includedLanguages: 'en,zh-TW,ja,ko,es,vi', 
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script>
+        const SUPABASE_URL = 'https://mqitovjowfayunujvpgn.supabase.co'; 
+        const SUPABASE_ANON_KEY = 'sb_publishable_JvLqRPVcS7xpHT-TNatAtQ_xRr6JhkD'; 
+        
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function fetchSignals() {
+            const container = document.getElementById('signals-container');
+            
+            const { data, error } = await _supabase
+                .from('alpha_signals')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                container.innerHTML = `<div class="text-red-400 text-sm">连接数据库失败，请刷新页面重试。</div>`;
+                return;
+            }
+
+            container.innerHTML = data.map(item => `
+                <div class="p-6 rounded-2xl glass-card flex flex-col h-full">
+                    <div class="flex-grow">
+                        <span class="inline-block px-2 py-1 rounded-md bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase mb-4 tracking-wider font-mono">Signal Live</span>
+                        <h2 class="text-lg font-bold leading-tight mb-4 text-slate-100 notranslate">
+                            ${item.title}
+                        </h2>
+                        <div class="text-slate-400 text-sm leading-relaxed mb-8 border-l-2 border-slate-700 pl-4 py-1 italic">
+                            ${item.ai_summary || 'AI 分析加载中...'}
+                        </div>
+                    </div>
+                    <a href="${item.referral_link}" target="_blank" class="w-full py-3 px-4 bg-sky-600 hover:bg-sky-500 text-white text-sm font-bold rounded-xl transition-all text-center shadow-lg shadow-sky-900/20 active:scale-95">
+                        立即参与预测 (GET REWARD)
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        fetchSignals();
+    </script>
+</body>
+</html>
