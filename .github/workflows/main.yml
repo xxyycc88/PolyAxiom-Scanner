@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write    # 关键：赋予脚本推送代码的权限
+      contents: write    # 必须开启，否则无法推送 data.json
     
     steps:
       - name: Checkout Code
@@ -31,5 +31,5 @@ jobs:
           git config --global user.name "PolyAxiom-Bot"
           git config --global user.email "bot@polyaxiom.com"
           git add data.json
-          git commit -m "自动更新实时信号数据" || exit 0
+          git commit -m "自动更新实时信号" || exit 0
           git push
