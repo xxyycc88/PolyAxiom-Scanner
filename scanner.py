@@ -1,46 +1,44 @@
-import os
 import requests
-from supabase import create_client, Client
+import json
+import os
 
-# 配置信息
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
-
-if not SUPABASE_URL or not SUPABASE_KEY:
-    print("❌ 错误: 环境变量配置缺失")
-    exit(1)
-
-# 初始化客户端
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-def get_polymarket_signals():
-    """抓取逻辑：已更正为 PolyAxiom 邀请链接"""
-    print("🔍 PolyAxiom 正在扫描全球预测市场...")
-    return [
-        {
-            "title": "NBA: Lakers vs Warriors - Market Analysis",
-            "ai_summary": "AI 监测到大额资金流入，当前赔率存在套利空间。",
-            "referral_link": "https://polymarket.com/event/lakers-vs-warriors?r=PolyAxiom"
-        },
-        {
-            "title": "Fed Interest Rate Decision (May 2026)",
-            "ai_summary": "预测市场暗示维持利率不变的概率为 72%。",
-            "referral_link": "https://polymarket.com/event/fed-may-2026?r=PolyAxiom"
-        }
-    ]
-
-def save_to_supabase(signals):
-    for signal in signals:
-        try:
-            # 使用 upsert，根据 title 自动更新
-            supabase.table("alpha_signals").upsert(
-                signal, on_conflict="title"
-            ).execute()
-            print(f"✅ PolyAxiom 信号同步成功: {signal['title']}")
-        except Exception as e:
-            print(f"❌ 运行异常: {str(e)}")
+def fetch_polymarket_data():
+    print("🔍 正在抓取 Polymarket 实时预测数据...")
+    # 这里使用的是 Polymarket 的公开 API 节点
+    url = "https://gamma-api.polymarket.com/events?limit=10&active=true&closed=false"
+    
+    try:
+        response = requests.get(url, timeout=15)
+        data = response.json()
+        
+        signals = []
+        for event in data:
+            # 提取标题、赔率（取第一个 market 的价格）
+            title = event.get('title', 'Unknown Event')
+            markets = event.get('markets', [{}])
+            # 简化逻辑：取第一个选项的价格作为 odds
+            outcome_prices = markets[0].get('outcomePrices', ['0.5', '0.5'])
+            odds = float(outcome_prices[0])
+            
+            # 拼接 PolyAxiom 专属邀请链接
+            slug = event.get('slug', '')
+            link = f"https://polymarket.com/event/{slug}?r=PolyAxiom"
+            
+            signals.append({
+                "title": title,
+                "odds": odds,
+                "link": link,
+                "category": event.get('groupItemTitle', 'Market')
+            })
+        
+        # 将结果保存为本地 JSON 文件
+        with open('data.json', 'w', encoding='utf-8') as f:
+            json.dump(signals, f, ensure_ascii=False, indent=4)
+        
+        print(f"✅ 成功抓取 {len(signals)} 条信号并生成 data.json")
+        
+    except Exception as e:
+        print(f"❌ 抓取失败: {e}")
 
 if __name__ == "__main__":
-    found_signals = get_polymarket_signals()
-    if found_signals:
-        save_to_supabase(found_signals)
+    fetch_polymarket_data()
