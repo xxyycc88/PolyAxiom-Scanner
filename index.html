@@ -58,4 +58,129 @@
             border-color: var(--accent);
         }
 
-        .category
+        .category {
+            font-size: 12px;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .odds-box {
+            background: rgba(88, 166, 255, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .odds-label {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .odds-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .btn {
+            display: block;
+            text-align: center;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--text-dim);
+            grid-column: 1 / -1;
+            padding: 50px;
+        }
+
+        footer {
+            margin-top: 50px;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PolyAxiom</h1>
+        <p>Polymarket 实时高胜率信号监控</p>
+    </header>
+
+    <div class="container" id="signals-list">
+        <div class="loading">正在同步全球预测市场数据...</div>
+    </div>
+
+    <footer>
+        © 2026 PolyAxiom | <a href="https://t.me/PolyAxiom" style="color: var(--accent);">联系我们</a>
+    </footer>
+
+    <script>
+        async function loadSignals() {
+            const container = document.getElementById('signals-list');
+            try {
+                // 核心逻辑：直接读取同目录下的 data.json
+                // 加时间戳防止浏览器缓存，确保数据实时
+                const response = await fetch('./data.json?t=' + new Date().getTime());
+                
+                if (!response.ok) throw new Error("无法获取数据文件");
+                
+                const data = await response.json();
+                container.innerHTML = ''; 
+
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="loading">暂无实时信号，请稍后再试。</div>';
+                    return;
+                }
+
+                data.forEach(signal => {
+                    const card = `
+                        <div class="signal-card">
+                            <div>
+                                <span class="category">${signal.category || '预测市场'}</span>
+                                <h3>${signal.title}</h3>
+                            </div>
+                            <div>
+                                <div class="odds-box">
+                                    <div class="odds-label">当前胜率 (Outcome Price)</div>
+                                    <div class="odds-value">${(signal.odds * 100).toFixed(1)}%</div>
+                                </div>
+                                <a href="${signal.link}" target="_blank" class="btn">立即前往下单</a>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            } catch (error) {
+                console.error("加载数据失败:", error);
+                container.innerHTML = `
+                    <div class="loading" style="color: #ff7b72;">
+                        数据同步暂时中断。<br>
+                        请确认 GitHub Actions 是否已成功运行并生成 data.json 文件。
+                    </div>`;
+            }
+        }
+
+        // 页面加载运行
+        loadSignals();
+        // 每 5 分钟自动刷新一次页面数据
+        setInterval(loadSignals, 300000);
+    </script>
+</body>
+</html>
