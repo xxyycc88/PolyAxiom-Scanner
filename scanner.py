@@ -3,9 +3,8 @@ import json
 import os
 
 def fetch_polymarket_data():
-    print("🔍 开始同步 PolyAxiom 核心数据...")
-    # 增加 limit 到 30，确保有足够的高质量信号
-    url = "https://gamma-api.polymarket.com/events?limit=30&active=true&closed=false"
+    print("🔍 PolyAxiom 数据校准启动...")
+    url = "https://gamma-api.polymarket.com/events?limit=25&active=true&closed=false"
     
     signals = []
     try:
@@ -18,29 +17,27 @@ def fetch_polymarket_data():
             markets = event.get('markets', [])
             if not markets: continue
             
-            # 核心改进：多路径价格抓取逻辑
+            # 精准抓取第一个选项的价格
             m = markets[0]
             raw_prices = m.get('outcomePrices')
-            odds = 0.0
+            odds = 0.5 # 默认值
             
             try:
-                # 路径 1: 标准列表格式 [0.6, 0.4]
                 if isinstance(raw_prices, list) and len(raw_prices) > 0:
                     odds = float(raw_prices[0])
-                # 路径 2: 字符串化列表 "[0.6, 0.4]"
                 elif isinstance(raw_prices, str):
-                    parsed = json.loads(raw_prices)
-                    odds = float(parsed[0])
+                    prices_list = json.loads(raw_prices)
+                    odds = float(prices_list[0])
                 
-                # 路径 3: 如果还是 0，尝试读取最新成交价 (Best Bid/Ask 的中点)
-                if odds == 0:
-                    # 有些新市场 API 还没刷出 outcomePrices，给个默认参考值
-                    odds = float(m.get('lastTradePrice', 0.5))
+                # 核心校准：Polymarket API 有时返回的是 0-1 之间的浮点数
+                # 如果 odds 已经是百分比形式（例如 54.5），保持不变；
+                # 如果是 0.545 形式，前端会乘以 100。
+                if odds > 1.0: 
+                    odds = odds / 100.0
             except:
-                odds = 0.5 # 兜底值
+                odds = 0.5
             
             slug = event.get('slug', '')
-            # 确保邀请码永远存在
             link = f"https://polymarket.com/event/{slug}?r=PolyAxiom"
             
             signals.append({
@@ -50,19 +47,17 @@ def fetch_polymarket_data():
                 "category": event.get('groupItemTitle', '预测市场')
             })
             
-        # 按照胜率从高到低排序，让你的页面看起来更专业
+        # 排序：让胜率最高的排在前面
         signals.sort(key=lambda x: x['odds'], reverse=True)
-        print(f"✅ 成功同步 {len(signals)} 条信号")
+        print(f"✅ 成功获取 {len(signals)} 条真实赔率信号")
         
     except Exception as e:
-        print(f"❌ 抓取异常: {e}")
-        # 即使报错也要保留老数据或展示同步中，绝对不让 data.json 消失
-        if not signals:
-            return 
+        print(f"❌ 运行异常: {e}")
+        if not signals: return
 
     with open('data.json', 'w', encoding='utf-8') as f:
         json.dump(signals, f, ensure_ascii=False, indent=4)
-    print("🚀 静态数据已写入仓库，准备上线")
+    print("🚀 data.json 已校准完毕")
 
 if __name__ == "__main__":
     fetch_polymarket_data()
