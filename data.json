@@ -82,7 +82,7 @@
     {
         "title": "NBA Western Conference Champion ",
         "odds": 48.5,
-        "volume": 16166.6,
+        "volume": 16177.3,
         "is_hot": true,
         "link": "https://polymarket.com/event/nba-western-conference-champion-933?r=PolyAxiom",
         "category": "预测市场"
@@ -90,7 +90,7 @@
     {
         "title": "Netanyahu out by...?",
         "odds": 48.5,
-        "volume": 76775.8,
+        "volume": 76781.8,
         "is_hot": true,
         "link": "https://polymarket.com/event/netanyahu-out-before-2027?r=PolyAxiom",
         "category": "预测市场"
@@ -98,7 +98,7 @@
     {
         "title": "2026 NBA Champion",
         "odds": 36.5,
-        "volume": 205305.2,
+        "volume": 205334.3,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-nba-champion?r=PolyAxiom",
         "category": "预测市场"
@@ -114,14 +114,14 @@
     {
         "title": "Russia x Ukraine ceasefire by end of 2026?",
         "odds": 31.5,
-        "volume": 12269.5,
+        "volume": 12270.0,
         "is_hot": true,
         "link": "https://polymarket.com/event/russia-x-ukraine-ceasefire-before-2027?r=PolyAxiom",
         "category": "预测市场"
     },
     {
         "title": "Harvey Weinstein prison time?",
-        "odds": 27.2,
+        "odds": 27.6,
         "volume": 682.1,
         "is_hot": true,
         "link": "https://polymarket.com/event/harvey-weinstein-prison-time?r=PolyAxiom",
@@ -146,7 +146,7 @@
     {
         "title": "2026 FIFA World Cup Winner ",
         "odds": 15.8,
-        "volume": 395811.2,
+        "volume": 395910.7,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-fifa-world-cup-winner-595?r=PolyAxiom",
         "category": "预测市场"
@@ -194,25 +194,33 @@
     {
         "title": "2026 NHL Stanley Cup Champion ",
         "odds": 11.5,
-        "volume": 57299.4,
+        "volume": 57302.3,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-nhl-stanley-cup-champion?r=PolyAxiom",
         "category": "预测市场"
     },
     {
+        "title": "UEFA Champions League Winner ",
+        "odds": 10.5,
+        "volume": 220336.6,
+        "is_hot": true,
+        "link": "https://polymarket.com/event/uefa-champions-league-winner?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
         "title": "Will any 2026 FIFA World Cup game scheduled in the U.S. be relocated abroad?",
-        "odds": 11.1,
+        "odds": 10.5,
         "volume": 7.8,
         "is_hot": true,
         "link": "https://polymarket.com/event/will-any-2026-fifa-world-cup-game-scheduled-in-the-us-be-relocated-abroad?r=PolyAxiom",
         "category": "预测市场"
     },
     {
-        "title": "UEFA Champions League Winner ",
-        "odds": 10.5,
-        "volume": 220334.2,
+        "title": "BitBoy convicted?",
+        "odds": 10.1,
+        "volume": 265.5,
         "is_hot": true,
-        "link": "https://polymarket.com/event/uefa-champions-league-winner?r=PolyAxiom",
+        "link": "https://polymarket.com/event/bitboy-convicted?r=PolyAxiom",
         "category": "预测市场"
     },
     {
@@ -224,17 +232,9 @@
         "category": "预测市场"
     },
     {
-        "title": "BitBoy convicted?",
-        "odds": 9.4,
-        "volume": 265.5,
-        "is_hot": true,
-        "link": "https://polymarket.com/event/bitboy-convicted?r=PolyAxiom",
-        "category": "预测市场"
-    },
-    {
         "title": "Xi Jinping out before 2027?",
         "odds": 8.8,
-        "volume": 7511.2,
+        "volume": 7511.3,
         "is_hot": true,
         "link": "https://polymarket.com/event/xi-jinping-out-before-2027?r=PolyAxiom",
         "category": "预测市场"
@@ -282,7 +282,7 @@
     {
         "title": "Augusta National Invitational - Winner ",
         "odds": 5.1,
-        "volume": 59186.9,
+        "volume": 59191.6,
         "is_hot": true,
         "link": "https://polymarket.com/event/augusta-national-invitational-winner?r=PolyAxiom",
         "category": "预测市场"
