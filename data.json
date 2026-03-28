@@ -6,16 +6,16 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/bundesliga-winner-527?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.10479079434189598
+        "rand_score": 0.5655854618733118
     },
     {
         "title": "Serie A - Top 4 Finish ",
         "odds": 96.5,
-        "volume": 110.6,
+        "volume": 112.2,
         "is_hot": true,
         "link": "https://polymarket.com/event/serie-a-top-4-finish?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.8816788320403807
+        "rand_score": 0.9367379374791046
     },
     {
         "title": "French Ligue 1 Winner ",
@@ -24,16 +24,16 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/french-ligue-1-winner?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.26376348735774735
+        "rand_score": 0.6770851930884627
     },
     {
         "title": "La Liga - Top Goalscorer ",
         "odds": 91.4,
-        "volume": 816.7,
+        "volume": 817.6,
         "is_hot": true,
         "link": "https://polymarket.com/event/la-liga-top-goalscorer?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.638999417790816
+        "rand_score": 0.18632637607777258
     },
     {
         "title": "Serie A - Top Goalscorer ",
@@ -42,34 +42,34 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/serie-a-top-goalscorer?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.23340276776090318
+        "rand_score": 0.1923041436875612
     },
     {
         "title": "2026 FIFA World Cup: Which countries qualify?",
-        "odds": 75.5,
-        "volume": 1461.3,
+        "odds": 76.0,
+        "volume": 1461.4,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-fifa-world-cup-which-countries-qualify?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.9114266847876196
+        "rand_score": 0.6036420207367815
     },
     {
         "title": "Serie A - Which Clubs Get Relegated?",
         "odds": 57.5,
-        "volume": 7.9,
+        "volume": 6.4,
         "is_hot": true,
         "link": "https://polymarket.com/event/serie-a-which-clubs-get-relegated?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.44060112722660427
+        "rand_score": 0.42605398489931723
     },
     {
         "title": "What will happen before GTA VI?",
         "odds": 54.0,
-        "volume": 19714.1,
+        "volume": 19714.8,
         "is_hot": true,
         "link": "https://polymarket.com/event/what-will-happen-before-gta-vi?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.49280102127658576
+        "rand_score": 0.32503213736021197
     },
     {
         "title": "Which party will win the Senate in 2026?",
@@ -78,43 +78,34 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/which-party-will-win-the-senate-in-2026?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.5684267521792504
+        "rand_score": 0.2132511689247556
     },
     {
         "title": "Netanyahu out by...?",
         "odds": 48.5,
-        "volume": 76924.1,
+        "volume": 77314.7,
         "is_hot": true,
         "link": "https://polymarket.com/event/netanyahu-out-before-2027?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.7468147234315894
-    },
-    {
-        "title": "Balance of Power: 2026 Midterms",
-        "odds": 48.5,
-        "volume": 4122.5,
-        "is_hot": true,
-        "link": "https://polymarket.com/event/balance-of-power-2026-midterms?r=PolyAxiom",
-        "category": "预测市场",
-        "rand_score": 0.5052197537745451
+        "rand_score": 0.6486647881952871
     },
     {
         "title": "NBA Western Conference Champion ",
         "odds": 48.5,
-        "volume": 16196.0,
+        "volume": 16198.3,
         "is_hot": true,
         "link": "https://polymarket.com/event/nba-western-conference-champion-933?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.011062706706794212
+        "rand_score": 0.5454418690808914
     },
     {
         "title": "2026 NBA Champion",
         "odds": 36.5,
-        "volume": 205442.5,
+        "volume": 205538.6,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-nba-champion?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.1880121618865238
+        "rand_score": 0.8159082156183616
     },
     {
         "title": "UEFA Europa League: Winner ",
@@ -123,7 +114,7 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/uefa-europa-league-winner?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.05717235220245376
+        "rand_score": 0.3748373945778535
     },
     {
         "title": "Russia x Ukraine ceasefire by end of 2026?",
@@ -132,7 +123,7 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/russia-x-ukraine-ceasefire-before-2027?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.8113915579391475
+        "rand_score": 0.769516294307057
     },
     {
         "title": "Harvey Weinstein prison time?",
@@ -141,16 +132,16 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/harvey-weinstein-prison-time?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.857761037177418
+        "rand_score": 0.4704740557970398
     },
     {
         "title": "NBA Eastern Conference Champion ",
         "odds": 19.5,
-        "volume": 13611.4,
+        "volume": 13611.6,
         "is_hot": true,
         "link": "https://polymarket.com/event/nba-eastern-conference-champion-442?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.366587333123753
+        "rand_score": 0.10576158501039334
     },
     {
         "title": "Zelenskyy out as Ukraine president by end of 2026?",
@@ -159,16 +150,16 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/zelenskyy-out-as-ukraine-president-before-2027?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.37409467978467137
+        "rand_score": 0.03874539403902555
     },
     {
         "title": "2026 FIFA World Cup Winner ",
         "odds": 15.8,
-        "volume": 396223.4,
+        "volume": 396497.8,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-fifa-world-cup-winner-595?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.9582416874009593
+        "rand_score": 0.35495051636499164
     },
     {
         "title": "SCOTUS accepts sports event contract case by...?     ",
@@ -177,7 +168,7 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/scotus-accepts-sports-event-contract-case-by-july-31-2026?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.24802215558668672
+        "rand_score": 0.8992819295171608
     },
     {
         "title": "Erdoğan out by December 31, 2026?",
@@ -186,7 +177,7 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/erdoan-out-before-2027?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.8810176891182364
+        "rand_score": 0.1059918501134407
     },
     {
         "title": "Putin out as President of Russia by December 31, 2026?",
@@ -195,16 +186,7 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/putin-out-before-2027?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.46284965156297353
-    },
-    {
-        "title": "Will any presidential candidate win outright in the first round of the Colombia's election?",
-        "odds": 12.0,
-        "volume": 33.5,
-        "is_hot": true,
-        "link": "https://polymarket.com/event/will-any-presidential-candidate-win-outright-in-the-first-round-of-the-colombias-election?r=PolyAxiom",
-        "category": "预测市场",
-        "rand_score": 0.48169347014459096
+        "rand_score": 0.9475716850379323
     },
     {
         "title": "Will Trump be impeached by end of 2026?",
@@ -213,25 +195,34 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/will-trump-be-impeached-by-december-31-2026?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.4711574456005053
+        "rand_score": 0.06511100113215418
+    },
+    {
+        "title": "Will any presidential candidate win outright in the first round of the Colombia's election?",
+        "odds": 12.0,
+        "volume": 33.5,
+        "is_hot": true,
+        "link": "https://polymarket.com/event/will-any-presidential-candidate-win-outright-in-the-first-round-of-the-colombias-election?r=PolyAxiom",
+        "category": "预测市场",
+        "rand_score": 0.023619581754524277
     },
     {
         "title": "2026 NHL Stanley Cup Champion ",
         "odds": 11.5,
-        "volume": 57317.0,
+        "volume": 57325.0,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-nhl-stanley-cup-champion?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.8909163378826879
+        "rand_score": 0.6465083427412778
     },
     {
         "title": "BitBoy convicted?",
-        "odds": 10.9,
+        "odds": 10.7,
         "volume": 265.8,
         "is_hot": true,
         "link": "https://polymarket.com/event/bitboy-convicted?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.5565994864084691
+        "rand_score": 0.5484075921198048
     },
     {
         "title": "Will any 2026 FIFA World Cup game scheduled in the U.S. be relocated abroad?",
@@ -240,16 +231,16 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/will-any-2026-fifa-world-cup-game-scheduled-in-the-us-be-relocated-abroad?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.9217809913137638
+        "rand_score": 0.6506812103970815
     },
     {
         "title": "UEFA Champions League Winner ",
         "odds": 10.5,
-        "volume": 220361.1,
+        "volume": 220388.4,
         "is_hot": true,
         "link": "https://polymarket.com/event/uefa-champions-league-winner?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.5740161306131556
+        "rand_score": 0.4903994241294348
     },
     {
         "title": "Will China invade Taiwan by end of 2026?",
@@ -258,34 +249,34 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/will-china-invade-taiwan-before-2027?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.8576386997393532
+        "rand_score": 0.14624020821850137
     },
     {
         "title": "Xi Jinping out before 2027?",
         "odds": 8.8,
-        "volume": 7511.8,
+        "volume": 7512.7,
         "is_hot": true,
         "link": "https://polymarket.com/event/xi-jinping-out-before-2027?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.1670122247926289
+        "rand_score": 0.5556386144624814
     },
     {
         "title": "English Premier League – 3rd Place ",
         "odds": 7.8,
-        "volume": 439.4,
+        "volume": 450.3,
         "is_hot": true,
         "link": "https://polymarket.com/event/english-premier-league-3rd-place?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.411725538657968
+        "rand_score": 0.8334481804695218
     },
     {
-        "title": "Will Trump pardon Ghislaine Maxwell by end of 2026?",
-        "odds": 6.5,
-        "volume": 510.1,
+        "title": "Bundesliga - Which Clubs Get Relegated?",
+        "odds": 6.9,
+        "volume": 47.6,
         "is_hot": true,
-        "link": "https://polymarket.com/event/will-trump-pardon-ghislaine-maxwell?r=PolyAxiom",
+        "link": "https://polymarket.com/event/bundesliga-which-clubs-get-relegated?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.7060482938628463
+        "rand_score": 0.07021816620149579
     },
     {
         "title": "Will Trump resign by December 31, 2026?",
@@ -294,25 +285,25 @@
         "is_hot": true,
         "link": "https://polymarket.com/event/will-trump-resign-by-december-31-2026?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.04240614373691698
+        "rand_score": 0.4692926502788288
+    },
+    {
+        "title": "Will Trump pardon Ghislaine Maxwell by end of 2026?",
+        "odds": 6.5,
+        "volume": 510.1,
+        "is_hot": true,
+        "link": "https://polymarket.com/event/will-trump-pardon-ghislaine-maxwell?r=PolyAxiom",
+        "category": "预测市场",
+        "rand_score": 0.23628013813108162
     },
     {
         "title": "Ligue 1 - Top Goalscorer ",
-        "odds": 6.3,
+        "odds": 6.5,
         "volume": 72.7,
         "is_hot": true,
         "link": "https://polymarket.com/event/ligue-1-top-goalscorer?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.7281070570759771
-    },
-    {
-        "title": "Bundesliga - Which Clubs Get Relegated?",
-        "odds": 6.0,
-        "volume": 51.7,
-        "is_hot": true,
-        "link": "https://polymarket.com/event/bundesliga-which-clubs-get-relegated?r=PolyAxiom",
-        "category": "预测市场",
-        "rand_score": 0.22632698640461357
+        "rand_score": 0.20464759789061215
     },
     {
         "title": "Will Wrexham be promoted to the EPL?",
@@ -321,6 +312,6 @@
         "is_hot": false,
         "link": "https://polymarket.com/event/will-wrexham-be-promoted-to-the-epl?r=PolyAxiom",
         "category": "预测市场",
-        "rand_score": 0.833426487464801
+        "rand_score": 0.9319047726740513
     }
 ]
