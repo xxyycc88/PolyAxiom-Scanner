@@ -4,7 +4,7 @@ import os
 
 def fetch_polymarket_data():
     print("🚀 PolyAxiom 终极高胜率引擎启动...")
-    # 抓取前 100 个活跃事件
+    # 抓取前 100 个事件，确保数据量充足
     url = "https://gamma-api.polymarket.com/events?limit=100&active=true&closed=false"
 
     # 1. 加载旧数据用于计算异动
@@ -32,11 +32,11 @@ def fetch_polymarket_data():
                 prices = m.get('outcomePrices')
                 odds_list = json.loads(prices) if isinstance(prices, str) else prices
                 odds = round(float(odds_list[0]) * 100, 1)
-                # 过滤极低胜率噪音
+                # 过滤极低胜率噪音，只留干货
                 if odds < 5: continue
             except: continue
 
-            # 交易量补全
+            # 交易量补全逻辑
             v24 = float(event.get('volume24h', 0))
             v_event = float(event.get('volume', 0))
             final_vol = max(v24, v_event)
@@ -51,16 +51,16 @@ def fetch_polymarket_data():
             signals.append({
                 "title": title,
                 "odds": odds,
-                "volume": round(final_vol / 1000, 1),
+                "volume": round(final_vol / 1000, 1), # 转换为 k 为单位
                 "is_hot": is_hot,
                 "link": f"https://polymarket.com/event/{event.get('slug', '')}?r=PolyAxiom",
                 "category": event.get('groupItemTitle', '预测市场')
             })
 
-        # 排序：异动项目 > 90%胜率 > 普通项目
+        # 排序权重：异动项目 > 90%胜率 > 普通项目
         signals.sort(key=lambda x: (x['is_hot'], x['odds'] >= 90, x['odds']), reverse=True)
 
-        # 写入 data.json (保留前 40 条)
+        # 写入 data.json (保留前 40 条精英信号)
         with open('data.json', 'w', encoding='utf-8') as f:
             json.dump(signals[:40], f, ensure_ascii=False, indent=4)
 
@@ -75,7 +75,7 @@ def fetch_polymarket_data():
         with open('sitemap.xml', 'w', encoding='utf-8') as f:
             f.write(sitemap_content)
             
-        print(f"✅ 更新完成：数据与 Sitemap.xml 已同步推送到云端。")
+        print(f"✅ 更新完成：数据与 Sitemap.xml 已生成。")
 
     except Exception as e:
         print(f"❌ 运行报错: {e}")
