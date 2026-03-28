@@ -10,7 +10,7 @@
     {
         "title": "Serie A - Top 4 Finish ",
         "odds": 96.5,
-        "volume": 188.9,
+        "volume": 102.3,
         "is_hot": true,
         "link": "https://polymarket.com/event/serie-a-top-4-finish?r=PolyAxiom",
         "category": "预测市场"
@@ -50,7 +50,7 @@
     {
         "title": "Serie A - Which Clubs Get Relegated?",
         "odds": 57.5,
-        "volume": 18.5,
+        "volume": 7.9,
         "is_hot": true,
         "link": "https://polymarket.com/event/serie-a-which-clubs-get-relegated?r=PolyAxiom",
         "category": "预测市场"
@@ -74,7 +74,7 @@
     {
         "title": "Balance of Power: 2026 Midterms",
         "odds": 48.5,
-        "volume": 4122.4,
+        "volume": 4122.5,
         "is_hot": true,
         "link": "https://polymarket.com/event/balance-of-power-2026-midterms?r=PolyAxiom",
         "category": "预测市场"
@@ -82,7 +82,7 @@
     {
         "title": "NBA Western Conference Champion ",
         "odds": 48.5,
-        "volume": 16177.3,
+        "volume": 16179.0,
         "is_hot": true,
         "link": "https://polymarket.com/event/nba-western-conference-champion-933?r=PolyAxiom",
         "category": "预测市场"
@@ -90,7 +90,7 @@
     {
         "title": "Netanyahu out by...?",
         "odds": 48.5,
-        "volume": 76781.8,
+        "volume": 76895.7,
         "is_hot": true,
         "link": "https://polymarket.com/event/netanyahu-out-before-2027?r=PolyAxiom",
         "category": "预测市场"
@@ -98,7 +98,7 @@
     {
         "title": "2026 NBA Champion",
         "odds": 36.5,
-        "volume": 205334.3,
+        "volume": 205342.1,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-nba-champion?r=PolyAxiom",
         "category": "预测市场"
@@ -144,14 +144,6 @@
         "category": "预测市场"
     },
     {
-        "title": "2026 FIFA World Cup Winner ",
-        "odds": 15.8,
-        "volume": 395910.7,
-        "is_hot": true,
-        "link": "https://polymarket.com/event/2026-fifa-world-cup-winner-595?r=PolyAxiom",
-        "category": "预测市场"
-    },
-    {
         "title": "SCOTUS accepts sports event contract case by...?     ",
         "odds": 14.5,
         "volume": 924.7,
@@ -165,6 +157,14 @@
         "volume": 275.7,
         "is_hot": true,
         "link": "https://polymarket.com/event/erdoan-out-before-2027?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "2026 FIFA World Cup Winner ",
+        "odds": 12.8,
+        "volume": 395944.3,
+        "is_hot": true,
+        "link": "https://polymarket.com/event/2026-fifa-world-cup-winner-595?r=PolyAxiom",
         "category": "预测市场"
     },
     {
@@ -194,7 +194,7 @@
     {
         "title": "2026 NHL Stanley Cup Champion ",
         "odds": 11.5,
-        "volume": 57302.3,
+        "volume": 57303.9,
         "is_hot": true,
         "link": "https://polymarket.com/event/2026-nhl-stanley-cup-champion?r=PolyAxiom",
         "category": "预测市场"
@@ -202,7 +202,7 @@
     {
         "title": "UEFA Champions League Winner ",
         "odds": 10.5,
-        "volume": 220336.6,
+        "volume": 220337.3,
         "is_hot": true,
         "link": "https://polymarket.com/event/uefa-champions-league-winner?r=PolyAxiom",
         "category": "预测市场"
@@ -242,7 +242,7 @@
     {
         "title": "English Premier League – 3rd Place ",
         "odds": 7.8,
-        "volume": 424.4,
+        "volume": 426.1,
         "is_hot": true,
         "link": "https://polymarket.com/event/english-premier-league-3rd-place?r=PolyAxiom",
         "category": "预测市场"
@@ -282,7 +282,7 @@
     {
         "title": "Augusta National Invitational - Winner ",
         "odds": 5.1,
-        "volume": 59191.6,
+        "volume": 59194.0,
         "is_hot": true,
         "link": "https://polymarket.com/event/augusta-national-invitational-winner?r=PolyAxiom",
         "category": "预测市场"
