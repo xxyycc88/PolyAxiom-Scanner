@@ -3,11 +3,13 @@ name: PolyAxiom Auto Scanner
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *' # 每 30 分钟自动跑一次
+    - cron: '*/30 * * * *' # 每 30 分钟自动运行一次
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # 关键：必须赋予 Actions 写入仓库的权限
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -27,6 +29,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json sitemap.xml  # <--- 关键点：一定要加这行，允许推送新文件
-          git commit -m "自动更新实时信号与Sitemap" || echo "没有数据变动"
+          git add data.json sitemap.xml
+          git commit -m "自动更新实时信号与Sitemap [SEO已启用]" || echo "无变动"
           git push
