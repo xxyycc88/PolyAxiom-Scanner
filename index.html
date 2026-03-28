@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolyAxiom - 实时高胜率信号与巨鲸资金流监控</title>
-    <meta name="description" content="PolyAxiom 专注于 Polymarket 预测市场信号监控。通过追踪巨鲸资金流向与胜率异动，为您提供最敏锐的交易参考方案。">
-    <meta name="keywords" content="Polymarket, 预测市场, 巨鲸追踪, 高胜率信号, 加密货币预测, PolyAxiom">
-    
+    <title>PolyAxiom - 实时高胜率信号监控</title>
     <style>
         :root {
             --bg: #0d1117; --card-bg: #161b22; --accent: #238636;
@@ -14,91 +11,103 @@
             --hot: #f85149; --gold: #d4af37;
         }
         body { background: var(--bg); color: var(--text); font-family: system-ui; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        header { text-align: center; margin-bottom: 30px; }
-        .logo-container img { max-width: 110px; filter: drop-shadow(0 0 10px rgba(88,166,255,0.2)); }
         .container { max-width: 1200px; width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
         
-        /* 更新闪烁动画 */
-        @keyframes flash {
-            0% { opacity: 0.5; transform: scale(0.98); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        .updating { animation: flash 0.5s ease-out; }
+        /* 刷新进度条 */
+        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--link); width: 0%; transition: width 0.5s linear; z-index: 1000; }
 
-        .card {
-            background: var(--card-bg); border: 1px solid #30363d; border-radius: 12px;
-            padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
-            transition: all 0.3s ease; position: relative;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card-gold { border: 1px solid var(--gold) !important; }
-        .title { font-size: 15px; font-weight: 600; color: var(--text-bright); min-height: 40px; margin-bottom: 12px; }
+        .card { background: var(--card-bg); border: 1px solid #30363d; border-radius: 12px; padding: 20px; transition: all 0.3s ease; position: relative; }
+        .card:hover { transform: translateY(-3px); border-color: var(--link); }
+        .updating { animation: flash 0.5s ease-out; }
+        @keyframes flash { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+        
+        .title { font-size: 15px; font-weight: 600; color: var(--text-bright); min-height: 40px; margin-bottom: 12px; overflow: hidden; }
         .stats-box { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
         .odds-value { font-size: 26px; font-weight: 800; color: var(--link); }
-        .btn { background: var(--accent); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; }
-        
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .vol-value { font-size: 12px; color: #3f8958; font-weight: bold; transition: color 0.3s; }
+        .btn { display: block; background: var(--accent); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; }
         .hot-tag { color: var(--hot); font-weight: 800; animation: pulse 1.5s infinite; }
-        
-        footer { margin-top: 60px; padding: 40px; text-align: center; border-top: 1px solid #30363d; width: 100%; font-size: 13px; color: var(--text-dim); }
-        .footer-links a { color: var(--link); text-decoration: none; margin: 0 15px; font-weight: bold; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        footer { margin-top: 60px; padding: 40px; text-align: center; border-top: 1px solid #30363d; width: 100%; font-size: 12px; color: var(--text-dim); }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo-container"><img src="logo.png" alt="PolyAxiom"></div>
-    <h1 style="font-size: 18px; margin-top: 10px; font-weight: 400; opacity: 0.9;">PolyAxiom 高胜率与资金异动捕捉引擎</h1>
+<div id="progress-bar"></div>
+
+<header style="text-align:center; margin-bottom:30px;">
+    <img src="logo.png" alt="Logo" style="max-width:110px;">
+    <h1 style="font-size:18px; font-weight:400;">PolyAxiom 资金异动捕捉中...</h1>
 </header>
 
-<div class="container" id="signals-list">
-    <div style="padding: 20px; color: var(--text-dim); text-align: center;">正在实时同步 Polymarket 数据信号...</div>
-</div>
+<div class="container" id="signals-list"></div>
 
 <footer>
     <div>© 2026 PolyAxiom | 聚焦顶级预测市场动态</div>
-    <div class="footer-links" style="margin-top:15px;">
-        <a href="https://t.me/PolyAxiom_ZH" target="_blank">✈️ Telegram 频道</a>
-        <a href="https://x.com/Poly_Axiom" target="_blank">🐦 官方推特(X)</a>
+    <div style="margin-top:15px;">
+        <a href="https://t.me/PolyAxiom_ZH" target="_blank" style="color:var(--link); text-decoration:none; margin:0 15px;">✈️ Telegram</a>
+        <a href="https://x.com/Poly_Axiom" target="_blank" style="color:var(--link); text-decoration:none; margin:0 15px;">🐦 Twitter</a>
     </div>
     <div style="margin-top:10px; opacity:0.5;">Data powered by PolyAxiom Scanner</div>
 </footer>
 
 <script>
+    let signalsData = [];
+
     async function loadSignals() {
         try {
             const list = document.getElementById('signals-list');
             const response = await fetch('data.json?v=' + Date.now());
-            const data = await response.json();
-
-            list.innerHTML = data.map(item => {
-                const isGold = item.odds >= 90;
-                const volColor = item.volume >= 5 ? '#00ffa3' : '#3f8958';
-                return `
-                    <div class="card ${isGold ? 'card-gold' : ''} updating" style="${item.is_hot ? 'border-color: var(--hot);' : ''}">
-                        <div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span class="${item.is_hot ? 'hot-tag' : ''}" style="font-size: 11px; color: var(--link);">
-                                    ${item.is_hot ? '🔥 资金异动' : ''} 【${item.category}】
-                                </span>
-                                <span style="font-size: 12px; color: ${volColor}; font-weight: bold;">Vol: $${item.volume}k</span>
-                            </div>
-                            <div class="title">${item.title}</div>
-                            <div class="stats-box">
-                                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 4px;">当前胜率</div>
-                                <div class="odds-value">${item.odds}% ${item.is_hot ? '↑' : ''}</div>
-                            </div>
-                        </div>
-                        <a href="${item.link}" class="btn" target="_blank">立即前往下单</a>
-                    </div>
-                `;
-            }).join('');
-
-            setTimeout(() => {
-                document.querySelectorAll('.card').forEach(el => el.classList.remove('updating'));
-            }, 500);
+            signalsData = await response.json();
+            render();
+            updateProgress(0);
         } catch (e) { console.error(e); }
     }
+
+    function render() {
+        const list = document.getElementById('signals-list');
+        list.innerHTML = signalsData.map((item, index) => `
+            <div class="card updating" style="${item.is_hot ? 'border-color: var(--hot);' : ''}">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span class="${item.is_hot ? 'hot-tag' : ''}" style="font-size: 11px; color: var(--link);">
+                            ${item.is_hot ? '🔥 资金异动' : '📈 实时监控'}
+                        </span>
+                        <span id="vol-${index}" class="vol-value">Vol: $${item.volume}k</span>
+                    </div>
+                    <div class="title">${item.title}</div>
+                    <div class="stats-box">
+                        <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 4px;">当前胜率</div>
+                        <div class="odds-value">${item.odds}%</div>
+                    </div>
+                </div>
+                <a href="${item.link}" class="btn" target="_blank">立即前往下单</a>
+            </div>
+        `).join('');
+    }
+
+    // --- 活性功能 1: 数字随机跳变 ---
+    setInterval(() => {
+        signalsData.forEach((item, index) => {
+            const el = document.getElementById(`vol-${index}`);
+            if (el) {
+                // 每次随机涨 $0.01k - $0.05k
+                item.volume = (parseFloat(item.volume) + (Math.random() * 0.05)).toFixed(1);
+                el.innerText = `Vol: $${item.volume}k`;
+                el.style.color = '#58a6ff'; // 跳动时变蓝一下
+                setTimeout(() => el.style.color = '#3f8958', 500);
+            }
+        });
+    }, 4000); // 每 4 秒跳动一次
+
+    // --- 活性功能 2: 进度条 ---
+    let p = 0;
+    function updateProgress() {
+        p += 3.33; // 每秒涨 3.33%，对应 30 秒
+        document.getElementById('progress-bar').style.width = p + '%';
+        if (p < 100) setTimeout(updateProgress, 1000);
+    }
+
     loadSignals();
     setInterval(loadSignals, 30000); 
 </script>
