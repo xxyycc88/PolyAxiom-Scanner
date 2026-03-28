@@ -1,4 +1,5 @@
 name: PolyAxiom Auto Scanner
+
 on:
   workflow_dispatch:
   schedule:
@@ -10,18 +11,22 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
+          
       - name: Install Dependencies
-        run: pip install requests # 这一步非常重要！
+        run: pip install requests
+        
       - name: Run Scanner
         run: python scanner.py
+        
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json
-          git commit -m "自动更新实时信号" || echo "没有数据变动"
+          git add data.json sitemap.xml  # <--- 关键点：一定要加这行，允许推送新文件
+          git commit -m "自动更新实时信号与Sitemap" || echo "没有数据变动"
           git push
