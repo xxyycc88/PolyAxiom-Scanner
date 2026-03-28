@@ -1,5 +1,19 @@
 [
     {
+        "title": "Bundesliga Winner ",
+        "odds": 99.1,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/bundesliga-winner-527?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "French Ligue 1 Winner ",
+        "odds": 93.0,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/french-ligue-1-winner?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
         "title": "2026 FIFA World Cup: Which countries qualify?",
         "odds": 75.5,
         "volume": 0.0,
@@ -84,6 +98,13 @@
         "category": "预测市场"
     },
     {
+        "title": "UEFA Champions League Winner ",
+        "odds": 10.5,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/uefa-champions-league-winner?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
         "title": "BitBoy convicted?",
         "odds": 9.9,
         "volume": 0.0,
@@ -95,6 +116,13 @@
         "odds": 8.8,
         "volume": 0.0,
         "link": "https://polymarket.com/event/xi-jinping-out-before-2027?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Will Trump pardon Ghislaine Maxwell by end of 2026?",
+        "odds": 6.5,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/will-trump-pardon-ghislaine-maxwell?r=PolyAxiom",
         "category": "预测市场"
     },
     {
@@ -144,6 +172,13 @@
         "odds": 0.1,
         "volume": 0.0,
         "link": "https://polymarket.com/event/nba-mvp-694?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Serie A League Winner ",
+        "odds": 0.1,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/serie-a-league-winner?r=PolyAxiom",
         "category": "预测市场"
     },
     {
@@ -207,6 +242,41 @@
         "odds": 0.0,
         "volume": 0.0,
         "link": "https://polymarket.com/event/ukraine-election-called-in-2025?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Will any country leave NATO by...?",
+        "odds": 0.0,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/will-any-country-leave-nato-in-2025?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Ukraine election held by...?",
+        "odds": 0.0,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/ukraine-election-held-in-2025?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Taylor Swift pregnant in 2025?",
+        "odds": 0.0,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/taylor-swift-pregnant-in-2025?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Mike Johnson out as Speaker by...?",
+        "odds": 0.0,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/mike-johnson-out-as-speaker-by?r=PolyAxiom",
+        "category": "预测市场"
+    },
+    {
+        "title": "Will OpenAI launch a consumer hardware product by...?",
+        "odds": 0.0,
+        "volume": 0.0,
+        "link": "https://polymarket.com/event/will-openai-launch-a-consumer-hardware-product-by?r=PolyAxiom",
         "category": "预测市场"
     }
 ]
