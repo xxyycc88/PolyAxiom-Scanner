@@ -1,40 +1,27 @@
 name: PolyAxiom Auto Scanner
-
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 * * * *' # 每小时运行一次
-  workflow_dispatch:      # 允许手动触发
+    - cron: '*/30 * * * *' # 每 30 分钟自动跑一次
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # 这一步是核心：显式声明权限
-    permissions:
-      contents: write
-    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          # 加入这个 Token 确保有权限推送回仓库
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-
       - name: Install Dependencies
-        run: pip install requests
-
+        run: pip install requests # 这一步非常重要！
       - name: Run Scanner
         run: python scanner.py
-
-      - name: Commit and Push Data
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data.json
-          # 如果没有变化则不报错退出
-          git commit -m "自动更新实时信号" || exit 0
-          git push origin main
+          git commit -m "自动更新实时信号" || echo "没有数据变动"
+          git push
