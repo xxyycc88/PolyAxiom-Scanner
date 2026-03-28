@@ -53,8 +53,8 @@
 </header>
 
 <div class="container" id="signals-list">
-    <div style="padding: 20px; color: var(--text-dim);">
-        正在加载 Polymarket 实时高胜率信号... 包含 2026 世界杯、加密货币趋势监控及巨鲸追踪信号。
+    <div style="padding: 20px; color: var(--text-dim); text-align: center;">
+        正在加载 Polymarket 实时高胜率信号... 覆盖世界杯预测、巨鲸追踪及加密货币异动。
     </div>
 </div>
 
@@ -98,7 +98,7 @@
         } catch (e) { console.error(e); }
     }
     loadSignals();
-    setInterval(loadSignals, 60000);
+    setInterval(loadSignals, 60000); // 网页内每分钟静默刷新
 </script>
 </body>
 </html>
