@@ -8,129 +8,69 @@
     
     <link rel="canonical" href="https://polyaxiom.com/" />
     
-    <title>PolyAxiom - Polymarket 实时高胜率信号与资金异动监控</title>
-    <meta name="description" content="PolyAxiom 专注于监控 Polymarket 预测市场的实时资金流向。通过 AI 算法捕捉巨鲸动向，提供高胜率信号、异动预警及全球热门事件赔率分析。">
-    <meta name="keywords" content="Polymarket, 预测市场, 资金异动, Web3, 加密货币预测, 高胜率信号, PolyAxiom">
+    <title>PolyAxiom - Polymarket 实时高胜率信号监控</title>
+    <meta name="description" content="PolyAxiom 实时捕捉 Polymarket 巨鲸动向，筛选高胜率预测信号。">
     
     <style>
         :root {
             --bg: #0d1117; --card-bg: #161b22; --accent: #238636;
             --text: #adbac7; --text-bright: #ffffff; --text-dim: #768390; --link: #58a6ff;
-            --hot: #f85149; --gold: #d4af37;
+            --hot: #f85149;
         }
-        body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; line-height: 1.6; }
+        body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .container { max-width: 1200px; width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
-        
-        /* 顶部刷新进度条 */
-        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--link); width: 0%; transition: width 0.5s linear; z-index: 1000; }
-
-        .card { background: var(--card-bg); border: 1px solid #30363d; border-radius: 12px; padding: 20px; transition: all 0.3s ease; position: relative; }
-        .card:hover { transform: translateY(-3.5px); border-color: var(--link); box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-        .updating { animation: flash 0.5s ease-out; }
-        @keyframes flash { 0% { opacity: 0.5; } 100% { opacity: 1; } }
-        
-        .title { font-size: 15px; font-weight: 600; color: var(--text-bright); min-height: 40px; margin-bottom: 12px; }
-        .stats-box { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #30363d; }
-        .odds-value { font-size: 26px; font-weight: 800; color: var(--link); }
-        .vol-value { font-size: 12px; color: #3f8958; font-weight: bold; transition: color 0.3s; }
-        .btn { display: block; background: var(--accent); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; }
-        .hot-tag { color: var(--hot); font-weight: 800; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-
-        /* SEO 文本增强板块 */
-        .seo-content { max-width: 1200px; margin-top: 40px; padding: 30px; border-top: 1px solid #30363d; color: var(--text-dim); font-size: 14px; text-align: justify; }
-        .seo-content h2 { color: var(--text-bright); font-size: 18px; }
-
-        footer { margin-top: 40px; padding: 40px; text-align: center; border-top: 1px solid #30363d; width: 100%; font-size: 13px; color: var(--text-dim); }
+        .card { background: var(--card-bg); border: 1px solid #30363d; border-radius: 12px; padding: 20px; transition: 0.3s; position: relative; }
+        .card:hover { border-color: var(--link); transform: translateY(-3px); }
+        .title { font-size: 15px; font-weight: 600; color: var(--text-bright); min-height: 45px; margin-bottom: 10px; }
+        .stats-box { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
+        .odds-value { font-size: 28px; font-weight: 800; color: var(--link); }
+        .btn { display: block; background: var(--accent); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; }
+        .hot-tag { color: var(--hot); font-weight: bold; font-size: 12px; animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        footer { margin-top: 50px; padding: 20px; text-align: center; color: var(--text-dim); font-size: 13px; }
     </style>
 </head>
 <body>
 
-<div id="progress-bar"></div>
-
 <header style="text-align:center; margin-bottom:40px;">
-    <img src="logo.png" alt="PolyAxiom Logo" style="max-width:120px; margin-bottom: 10px;">
-    <h1 style="font-size:22px; font-weight:600; color: var(--text-bright);">PolyAxiom 资金异动捕捉引擎</h1>
-    <p style="color: var(--text-dim);">实时扫描 Polymarket 巨鲸动向与高胜率信号</p>
+    <img src="logo.png" alt="PolyAxiom" style="max-width:100px;">
+    <h1 style="color: var(--text-bright); font-size: 24px;">PolyAxiom 资金异动捕捉引擎</h1>
+    <p>实时扫描 Polymarket 巨鲸动向与高胜率信号</p>
 </header>
 
 <div class="container" id="signals-list"></div>
 
-<section class="seo-content">
-    <h2>关于 PolyAxiom 预测市场扫描器</h2>
-    <p>
-        PolyAxiom 是一款专为 <strong>Polymarket</strong> 设计的实时信号扫描工具。我们通过深度算法监控链上资产流动，实时捕捉全球顶级预测市场的资金异动。
-        无论是 2026 世界杯预测、NBA 总冠军赔率，还是地缘政治事件的实时动态，PolyAxiom 都能为您提供最直观的成交量（Volume）与胜率（Odds）变化分析。
-    </p>
-    <p>
-        我们的系统每分钟自动扫描数十个高流动性池子，筛选出<strong>高胜率（High Win Rate）</strong>且具备资金灌入迹象的优质信号。
-        作为 Web3 时代的专业数据哨兵，PolyAxiom 致力于打破信息差，帮助用户在瞬息万变的预测市场中掌握先机。
-    </p>
-</section>
-
-<footer>
-    <div>© 2026 PolyAxiom | 聚焦顶级预测市场动态</div>
-    <div style="margin-top:20px;">
-        <a href="https://t.me/PolyAxiom_ZH" target="_blank" style="color:var(--link); text-decoration:none; margin:0 15px;">✈️ Telegram</a>
-        <a href="https://x.com/Poly_Axiom" target="_blank" style="color:var(--link); text-decoration:none; margin:0 15px;">🐦 Twitter (X)</a>
+<footer id="seo-footer">
+    <p>PolyAxiom 专注于 Polymarket 数据分析，监控世界杯、NBA、地缘政治等预测市场的实时赔率与资金流向。</p>
+    <div>
+        <a href="https://t.me/PolyAxiom_ZH" target="_blank" style="color:var(--link); margin: 0 10px;">Telegram</a>
+        <a href="https://x.com/Poly_Axiom" target="_blank" style="color:var(--link); margin: 0 10px;">Twitter</a>
     </div>
 </footer>
 
 <script>
-    let signalsData = [];
-
-    async function loadSignals() {
+    async function load() {
         try {
-            const response = await fetch('data.json?v=' + Date.now());
-            signalsData = await response.json();
-            render();
-            resetProgress();
-        } catch (e) { console.error("数据加载失败:", e); }
-    }
-
-    function render() {
-        const list = document.getElementById('signals-list');
-        list.innerHTML = signalsData.map((item, index) => `
-            <div class="card updating" style="${item.is_hot ? 'border-color: var(--hot);' : ''}">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <span class="${item.is_hot ? 'hot-tag' : ''}" style="font-size: 11px; color: var(--link);">
-                        ${item.is_hot ? '🔥 资金异动' : '📈 实时监控'}
-                    </span>
-                    <span id="vol-${index}" class="vol-value">Vol: $${item.volume}k</span>
+            const res = await fetch('data.json?v=' + Date.now());
+            const data = await res.json();
+            document.getElementById('signals-list').innerHTML = data.map(item => `
+                <div class="card" style="${item.is_hot ? 'border-color: var(--hot);' : ''}">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span class="${item.is_hot ? 'hot-tag' : ''}">${item.is_hot ? '🔥 资金异动' : '📡 实时监控'}</span>
+                        <span style="font-size:12px; color:var(--accent);">Vol: $${item.volume}k</span>
+                    </div>
+                    <div class="title">${item.title}</div>
+                    <div class="stats-box">
+                        <div style="font-size:11px; color:var(--text-dim);">当前胜率</div>
+                        <div class="odds-value">${item.odds}%</div>
+                    </div>
+                    <a href="${item.link}" class="btn" target="_blank">立即前往下单</a>
                 </div>
-                <div class="title">${item.title}</div>
-                <div class="stats-box">
-                    <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 4px;">当前胜率</div>
-                    <div class="odds-value">${item.odds}%</div>
-                </div>
-                <a href="${item.link}" class="btn" target="_blank">立即前往下单</a>
-            </div>
-        `).join('');
+            `).join('');
+        } catch (e) { console.error(e); }
     }
-
-    // ✅ 活性功能：数字随机跳变
-    setInterval(() => {
-        signalsData.forEach((item, index) => {
-            const el = document.getElementById(`vol-${index}`);
-            if (el) {
-                item.volume = (parseFloat(item.volume) + (Math.random() * 0.05)).toFixed(1);
-                el.innerText = `Vol: $${item.volume}k`;
-                el.style.color = '#58a6ff'; 
-                setTimeout(() => el.style.color = '#3f8958', 600);
-            }
-        });
-    }, 4000);
-
-    let progress = 0;
-    function resetProgress() { progress = 0; }
-    setInterval(() => {
-        progress += 2; 
-        if (progress > 100) progress = 100;
-        document.getElementById('progress-bar').style.width = progress + '%';
-    }, 1000);
-
-    loadSignals();
-    setInterval(loadSignals, 50000); 
+    load();
+    setInterval(load, 60000); // 每一分钟强制刷新一次数据
 </script>
 </body>
 </html>
