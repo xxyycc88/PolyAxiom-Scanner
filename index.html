@@ -19,7 +19,6 @@
         .lang-switch { position: absolute; top: 20px; right: 20px; z-index: 1001; background: rgba(13, 17, 23, 0.9); border: 1px solid var(--link); color: var(--link); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; backdrop-filter: blur(4px); transition: 0.3s; }
         .lang-switch:hover { background: var(--link); color: white; }
 
-        /* 核心四个组件的网格布局 */
         .widget-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 20px; margin-bottom: 40px; }
         @media (max-width: 1000px) { .widget-section { grid-template-columns: 1fr; } }
         
@@ -94,7 +93,7 @@
     const i18n = {
         'zh': {
             mainTitle: "PolyAxiom 资金异动捕捉引擎",
-            subTitle: "由 Axiomcom 官方接口驱动 · 实时扫描信号 & 巨鲸大单",
+            subTitle: "由 Axiomcom 官方接口驱动 · 实时扫描信号",
             hot: "🔥 资金异动",
             whale: "🐋 巨鲸建仓",
             monitor: "📡 实时监控",
@@ -106,7 +105,7 @@
         },
         'en': {
             mainTitle: "PolyAxiom Alpha Scanner",
-            subTitle: "Driven by Axiomcom Official API · Live Signals & Whale Tracker",
+            subTitle: "Driven by Axiomcom Official API · Live Signals",
             hot: "🔥 Whale Alert",
             whale: "🐋 Whale Entry",
             monitor: "📡 Live Signal",
@@ -139,15 +138,33 @@
     async function loadSignals() {
         try {
             const res = await fetch('./data.json?v=' + Date.now());
-            currentSignalsData = await res.json();
+            const rawData = await res.json();
+            
+            // --- 严格过滤逻辑 ---
+            currentSignalsData = rawData.filter(item => {
+                const title = (item.title || "").toLowerCase();
+                const prob = parseFloat(item.odds);
+                // 1. 屏蔽 Jinping
+                if (title.includes("jinping")) return false;
+                // 2. 过滤掉死单 (低于2% 或 高于98%)
+                if (prob < 2 || prob > 98) return false;
+                return true;
+            });
+
+            // 排序逻辑：成交额大且是巨鲸的排前面
+            currentSignalsData.sort((a, b) => (b.is_whale - a.is_whale) || (b.volume - a.volume));
             renderSignals();
         } catch (e) { console.error("Data Load Error", e); }
     }
 
     function renderSignals() {
-        if (!currentSignalsData.length) return;
+        const container = document.getElementById('signals-list');
+        if (!currentSignalsData.length) {
+            container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-dim);">监控中，暂无高胜率异动信号...</div>`;
+            return;
+        }
         const texts = i18n[currentLang];
-        document.getElementById('signals-list').innerHTML = currentSignalsData.map((item, index) => {
+        container.innerHTML = currentSignalsData.map((item, index) => {
             let tag = `<span class="tag" style="background:#30363d">${texts.monitor}</span>`;
             if (item.is_whale) tag = `<span class="tag whale-tag">${texts.whale}</span>`;
             else if (item.is_hot) tag = `<span class="tag hot-tag">${texts.hot}</span>`;
