@@ -3,167 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolyAxiom - 預測市場數據導航</title>
+    <title>PolyAxiom - 預測市場導航</title>
     <style>
         :root {
             --bg: #0d1117; --card-bg: #161b22; --accent: #238636;
             --text: #adbac7; --text-bright: #ffffff; --text-dim: #768390; --link: #58a6ff;
-            --hot: #f85149; --whale: #f1e05a; --border: #30363d;
+            --border: #30363d;
         }
-        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; }
         
-        /* 頁面整體包裹：解決標題偏移 */
-        .main-wrapper { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        /* 頁面容器：確保居中且不跑偏 */
+        .page-container { max-width: 1440px; margin: 0 auto; padding: 20px; }
 
         /* 標題區：強行居中 */
-        header { width: 100%; text-align: center; margin-bottom: 40px; }
-        .logo-box { max-width: 50px; margin-bottom: 15px; }
-        .stats-row { display: flex; justify-content: center; gap: 60px; margin: 25px 0; }
-        .stat-item { text-align: center; }
+        header { text-align: center; margin-bottom: 40px; }
+        .stats-row { display: flex; justify-content: center; gap: 50px; margin-top: 20px; }
         .stat-val { font-size: 32px; font-weight: 800; color: #fff; font-family: monospace; }
 
-        /* 三欄布局：左側 Feed | 中間核心 | 右側工具 */
-        .content-grid { 
-            display: grid; 
-            grid-template-columns: 260px 1fr 260px; 
-            gap: 20px; 
-            width: 100%; 
-        }
+        /* 三欄布局：寬度鎖死 */
+        .layout { display: flex; gap: 20px; justify-content: center; }
+        .side-panel { width: 260px; flex-shrink: 0; }
+        .main-content { flex: 1; max-width: 860px; }
 
-        /* 側邊欄樣式 */
-        .glass-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 15px; }
+        .glass-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
 
-        /* 中間核心區：四個大圖 */
-        .market-widgets { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-            margin-bottom: 30px; 
-        }
-        .widget-box { 
-            background: #000; border-radius: 12px; border: 1px solid var(--border); 
-            height: 320px; overflow: hidden; 
-        }
+        /* 四個核心大圖 */
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .hero-item { background: #000; border: 1px solid var(--border); border-radius: 12px; height: 320px; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* 核心修正：18 個信號卡片網格布局 */
-        .signals-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; 
-            width: 100%;
-        }
-        .card { 
-            background: var(--card-bg); border: 1px solid var(--border); 
-            border-radius: 10px; padding: 20px; position: relative; 
-        }
-        .card .vol { font-size: 10px; color: var(--text-dim); text-align: right; margin-bottom: 8px; }
-        .card .title { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 15px; height: 40px; overflow: hidden; line-height: 1.4; }
-        .card .prob-box { 
-            background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; 
-            text-align: center; margin-bottom: 15px; 
-        }
-        .card .prob-val { font-size: 24px; font-weight: 800; color: var(--link); }
+        /* 18 個信號卡片：解決排版和數據顯示問題 */
+        .signals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: flex; flex-direction: column; }
+        .card-vol { font-size: 10px; color: var(--text-dim); text-align: right; }
+        .card-title { font-size: 14px; font-weight: bold; color: #fff; margin: 10px 0; height: 40px; line-height: 1.4; overflow: hidden; }
+        .card-prob { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 15px; }
+        .card-prob-val { font-size: 24px; font-weight: 800; color: var(--link); }
         
-        /* 按鈕組：修復擠壓問題 */
         .btn-group { display: flex; gap: 10px; }
-        .btn { 
-            flex: 1; padding: 10px; border-radius: 6px; font-size: 12px; 
-            font-weight: bold; text-align: center; text-decoration: none; cursor: pointer; 
-        }
+        .btn { flex: 1; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: bold; text-align: center; text-decoration: none; cursor: pointer; }
         .btn-buy { background: var(--accent); color: #fff; }
         .btn-share { background: #30363d; color: #fff; }
 
-        /* Feed 滾動效果 */
-        #feed-flow { height: 600px; overflow: hidden; font-size: 11px; }
+        /* Feed 流 */
+        #feed-content { height: 500px; overflow: hidden; font-size: 11px; }
+        .social-link { color: var(--link); text-decoration: none; border: 1px solid var(--border); padding: 5px 15px; border-radius: 20px; font-size: 12px; }
 
-        /* 導航鏈接 */
-        .social-links { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
-        .social-links a, .social-links button { 
-            color: var(--link); text-decoration: none; font-size: 12px; 
-            border: 1px solid var(--border); padding: 8px 18px; border-radius: 20px; 
-            background: transparent; cursor: pointer;
-        }
-
-        footer { margin-top: 60px; padding: 30px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 11px; letter-spacing: 2px; }
+        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 11px; letter-spacing: 2px; border-top: 1px solid var(--border); margin-top: 40px; }
     </style>
 </head>
 <body>
 
-<div class="main-wrapper">
+<div class="page-container">
     <header>
-        <img src="logo.png" class="logo-box">
-        <h1 style="color:#fff; font-size: 42px; margin: 0;">PolyAxiom 捕捉引擎</h1>
-        <p style="color:var(--text-dim); margin-top: 10px;">專注於預測市場的數據導航與深度審計</p>
+        <h1 style="color:#fff; font-size: 42px; margin-bottom: 5px;">PolyAxiom 捕捉引擎</h1>
+        <p style="color:var(--text-dim);">實時掃描 Polymarket 巨鯨大單 & 資金走向</p>
         
         <div class="stats-row">
             <div class="stat-item"><div class="stat-val">5,010+</div><div style="font-size:11px;">今日掃描信號</div></div>
-            <div class="stat-item"><div class="stat-val">$10,807.61M</div><div style="font-size:11px;">實時監控資金</div></div>
+            <div class="stat-item"><div class="stat-val">$10,807.61M</div><div style="font-size:11px;">監控總資金</div></div>
         </div>
 
-        <div class="social-links">
-            <a href="https://x.com/Poly_Axiom" target="_blank">𝕏 / Poly_Axiom</a>
-            <a href="https://t.me/PolyAxiom_ZH" target="_blank">✈️ PolyAxiom_ZH</a>
-            <button onclick="doTranslate()">🌐 Translation</button>
+        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
+            <a href="https://x.com/Poly_Axiom" target="_blank" class="social-link">𝕏 / Poly_Axiom</a>
+            <a href="https://t.me/PolyAxiom_ZH" target="_blank" class="social-link">✈️ PolyAxiom_ZH</a>
         </div>
     </header>
 
-    <div class="content-grid">
-        <aside>
+    <div class="layout">
+        <aside class="side-panel">
             <div class="glass-box">
-                <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                    <span style="color:var(--link); font-weight:bold; font-size:12px;">📡 ALPHA FEED</span>
-                    <span style="color:var(--accent); font-size:10px;">● REAL-TIME</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold; font-size:12px;">
+                    <span style="color:var(--link);">📡 ALPHA FEED</span>
+                    <span style="color:var(--accent);">● LIVE</span>
                 </div>
-                <div id="feed-flow"></div>
+                <div id="feed-content"></div>
             </div>
         </aside>
 
-        <main>
-            <section class="market-widgets">
-                <div class="widget-box">
-                    <iframe src="https://embed.polymarket.com/market?event=2026-fifa-world-cup-winner-595&theme=dark&r=Axiomcom"></iframe>
-                </div>
-                <div class="widget-box">
-                    <iframe src="https://embed.polymarket.com/market?market=will-bitcoin-reach-1000000-by-december-31-2026-946&theme=dark&r=Axiomcom"></iframe>
-                </div>
-                <div class="widget-box">
-                    <iframe src="https://embed.polymarket.com/market?event=balance-of-power-2026-midterms&theme=dark&r=Axiomcom"></iframe>
-                </div>
-                <div class="widget-box">
-                    <iframe src="https://embed.polymarket.com/market?event=richest-person-on-december-31-2026&theme=dark&r=Axiomcom"></iframe>
-                </div>
+        <main class="main-content">
+            <section class="hero-grid">
+                <div class="hero-item"><iframe src="https://embed.polymarket.com/market?event=2026-fifa-world-cup-winner-595&theme=dark&r=Axiomcom"></iframe></div>
+                <div class="hero-item"><iframe src="https://embed.polymarket.com/market?market=will-bitcoin-reach-1000000-by-december-31-2026-946&theme=dark&r=Axiomcom"></iframe></div>
+                <div class="hero-item"><iframe src="https://embed.polymarket.com/market?event=balance-of-power-2026-midterms&theme=dark&r=Axiomcom"></iframe></div>
+                <div class="hero-item"><iframe src="https://embed.polymarket.com/market?event=richest-person-on-december-31-2026&theme=dark&r=Axiomcom"></iframe></div>
             </section>
 
-            <div class="signals-grid" id="signals-list">
+            <div class="signals-grid" id="signals-container">
                 </div>
         </main>
 
-        <aside>
-            <div class="glass-box">
-                <div style="font-size:11px; font-weight:bold; margin-bottom:12px;">📊 MARKET SENTIMENT</div>
-                <div style="height:6px; background:linear-gradient(90deg, #f85149, #f1e05a, #238636); border-radius:3px; position:relative;">
-                    <div style="position:absolute; width:4px; height:12px; background:#fff; top:-3px; left:72%;"></div>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:9px; margin-top:8px;"><span>FEAR</span><span>GREED</span></div>
-            </div>
-
+        <aside class="side-panel">
             <div class="glass-box">
                 <div style="font-size:11px; font-weight:bold; color:var(--link); margin-bottom:15px;">🧮 ARBITRAGE CALC</div>
-                <input type="number" id="pA" value="0.52" style="width:100%; background:#000; border:1px solid var(--border); color:#fff; padding:8px; margin-bottom:10px; border-radius:4px;">
-                <input type="number" id="pB" value="0.45" style="width:100%; background:#000; border:1px solid var(--border); color:#fff; padding:8px; margin-bottom:15px; border-radius:4px;">
-                <div style="border:1px dashed var(--accent); padding:15px; text-align:center; border-radius:8px;">
-                    <div style="font-size:24px; font-weight:800; color:var(--accent);">3.09%</div>
-                    <div style="font-size:9px; color:var(--text-dim);">套利預計利潤</div>
-                </div>
-                <a href="https://polymarket.com/?r=Axiomcom" target="_blank" class="btn btn-buy" style="display:block; margin-top:15px; text-decoration:none;">執行對沖套利</a>
+                <div style="font-size:10px; margin-bottom:5px;">Platform A (Yes)</div>
+                <input type="number" value="0.52" style="width:100%; background:#000; border:1px solid var(--border); color:#fff; padding:8px; margin-bottom:10px; border-radius:4px;">
+                <div style="font-size:10px; margin-bottom:5px;">Platform B (No)</div>
+                <input type="number" value="0.45" style="width:100%; background:#000; border:1px solid var(--border); color:#fff; padding:8px; margin-bottom:15px; border-radius:4px;">
+                <div style="border:1px dashed var(--accent); padding:10px; text-align:center; border-radius:8px; color:var(--accent); font-size:24px; font-weight:800;">3.09%</div>
+                <a href="https://polymarket.com/?r=Axiomcom" target="_blank" class="btn btn-buy" style="display:block; margin-top:15px; text-decoration:none;">Execute Arbitrage</a>
             </div>
         </aside>
     </div>
@@ -176,35 +114,36 @@
 <script>
     const INVITE = "?r=Axiomcom";
     
-    // 生成 18 個安全信號
-    const mockData = [
-        { t: "Will GTA VI be delayed to 2027?", v: "890.5", p: "12.5" },
-        { t: "Will Bitcoin hit $100k in 2026?", v: "1540.2", p: "68.2" },
-        { t: "2026 FIFA World Cup Winner: Spain?", v: "2100.8", p: "16.0" },
-        { t: "Will SpaceX land on Mars by 2028?", v: "450.3", p: "5.5" },
-        { t: "Fed to cut rates in June 2026?", v: "3200.1", p: "72.0" },
-        { t: "Will Nvidia remain largest market cap?", v: "1200.5", p: "54.2" },
-        { t: "NBA 2026 Champion: Celtics?", v: "670.9", p: "38.5" },
-        { t: "Will Apple release AR glasses in 2026?", v: "340.2", p: "21.0" },
-        { t: "Next UK Prime Minister: Starmer?", v: "980.4", p: "88.5" },
-        { t: "Will Gold hit $3000 in 2026?", v: "1100.2", p: "42.0" },
-        { t: "Cannes 2026 Best Picture Winner?", v: "120.5", p: "14.2" },
-        { t: "Will Ethereum flip Bitcoin cap?", v: "880.7", p: "9.5" },
-        { t: "2026 US Midterm: GOP Senate?", v: "4500.3", p: "51.5" },
-        { t: "Will AI reach AGI by end of 2026?", v: "2300.6", p: "18.2" },
-        { t: "Tesla Cybercab launch success?", v: "760.1", p: "33.5" },
-        { t: "Will China invade Taiwan by 2027?", v: "5600.4", p: "9.8" },
-        { t: "Will Trump resign before Dec 31?", v: "450.2", p: "6.5" },
-        { t: "Will Taylor Swift announce retirement?", v: "150.9", p: "1.2" }
+    // 18 個安全且無 undefined 的數據源
+    const markets = [
+        { title: "Will GTA VI be delayed to 2027?", vol: "890.5", prob: "12.5" },
+        { title: "Will Bitcoin hit $100k in 2026?", vol: "1540.2", prob: "68.2" },
+        { title: "World Cup 2026: Spain to win?", vol: "2100.8", prob: "16.0" },
+        { title: "Fed to cut rates in June 2026?", vol: "3200.1", prob: "72.0" },
+        { title: "Nvidia to hit $5T market cap?", vol: "1200.5", prob: "54.2" },
+        { title: "Will SpaceX land on Mars by 2028?", vol: "450.3", prob: "5.5" },
+        { title: "NBA 2026 Champion: Celtics?", vol: "670.9", prob: "38.5" },
+        { title: "Apple to release AR glasses?", vol: "340.2", prob: "21.0" },
+        { title: "Gold price to hit $3000?", vol: "1100.2", prob: "42.0" },
+        { title: "Will Ethereum flip Bitcoin cap?", vol: "880.7", prob: "9.5" },
+        { title: "2026 US Midterms: GOP Senate?", vol: "4500.3", prob: "51.5" },
+        { title: "Will AGI be achieved in 2026?", vol: "2300.6", prob: "18.2" },
+        { title: "Tesla Cybercab launch success?", vol: "760.1", prob: "33.5" },
+        { title: "Will Starship orbit the Earth?", vol: "920.4", prob: "88.1" },
+        { title: "2026 Oscars: Best Picture?", vol: "150.2", prob: "6.5" },
+        { title: "Global heat records broken?", vol: "5600.4", prob: "92.0" },
+        { title: "Will Trump win in 2028?", vol: "450.2", prob: "6.5" },
+        { title: "Super Bowl 2026 Winner?", vol: "150.9", prob: "12.0" }
     ];
 
-    const list = document.getElementById('signals-list');
-    list.innerHTML = mockData.map(item => `
+    // 修正渲染邏輯：確標屬性對應 markets 對象中的 key
+    const container = document.getElementById('signals-container');
+    container.innerHTML = markets.map(m => `
         <div class="card">
-            <div class="vol">$${item.v}k Vol.</div>
-            <div class="title">${item.title}</div>
-            <div class="prob-box">
-                <div class="prob-val">${item.p}%</div>
+            <div class="card-vol">$${m.vol}k Vol.</div>
+            <div class="card-title">${m.title}</div>
+            <div class="card-prob">
+                <div class="card-prob-val">${m.prob}%</div>
                 <div style="font-size:9px; color:var(--text-dim);">WIN PROB</div>
             </div>
             <div class="btn-group">
@@ -214,17 +153,17 @@
         </div>
     `).join('');
 
-    // 動態 Feed 腳本
-    const flow = document.getElementById('feed-flow');
+    // Feed 動態
+    const feed = document.getElementById('feed-content');
     setInterval(() => {
-        const div = document.createElement('div');
-        div.style.cssText = "border-left:2px solid var(--accent); padding-left:10px; margin-bottom:15px; animation:fadeIn 0.5s;";
-        div.innerHTML = `<span style="color:var(--text-dim); font-size:9px;">${new Date().toLocaleTimeString()}</span><br>
-                         <b style="color:#fff;">Whale 0x${Math.random().toString(16).slice(2,6)}</b> bought <b style="color:var(--whale);">$${Math.floor(Math.random()*90)+10}k</b><br>
-                         <span style="color:var(--link);">Market Update</span>`;
-        flow.prepend(div);
-        if(flow.children.length > 12) flow.lastElementChild.remove();
-    }, 4000);
+        const item = document.createElement('div');
+        item.style.cssText = "border-left:2px solid var(--accent); padding-left:10px; margin-bottom:12px; animation:fadeIn 0.5s;";
+        item.innerHTML = `<span style="color:var(--text-dim); font-size:9px;">${new Date().toLocaleTimeString()}</span><br>
+                          <b style="color:#fff;">Whale 0x${Math.random().toString(16).slice(2,6)}</b> bought <b style="color:#f1e05a;">$${Math.floor(Math.random()*90)+10}k</b><br>
+                          <span style="color:var(--link);">Market Update</span>`;
+        feed.prepend(item);
+        if(feed.children.length > 10) feed.lastElementChild.remove();
+    }, 3000);
 </script>
 
 </body>
