@@ -3,59 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <title>PolyAxiom - 預測市場數據導航</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>PolyAxiom - 预测市场数据导航</title>
     <style>
         :root {
-            --bg: #0d1117; --card-bg: rgba(22, 27, 34, 0.8); --accent: #238636;
+            --bg: #0d1117; --card-bg: #161b22; --accent: #238636;
             --text: #adbac7; --text-bright: #ffffff; --text-dim: #768390; --link: #58a6ff;
             --hot: #f85149; --whale: #f1e05a; --border: #30363d;
         }
-        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; padding: 0; overflow-x: hidden; top: 0 !important; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; padding: 0; top: 0 !important; }
         
-        /* 隱藏 Google 翻譯垃圾工具欄 */
+        /* 隐藏翻译条 */
         #goog-gt-tt, .goog-te-balloon-frame, .goog-te-banner-frame { display: none !important; }
         .goog-text-highlight { background: transparent !important; box-shadow: none !important; color: inherit !important; }
         body > .skiptranslate { display: none !important; }
-        
-        #whale-alert { display: none; position: fixed; top: 0; width: 100%; background: var(--hot); color: #fff; text-align: center; padding: 8px; font-weight: bold; z-index: 10001; font-size: 13px; box-shadow: 0 2px 15px rgba(248,81,73,0.5); }
 
         .main-wrapper { max-width: 1550px; width: 98%; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr 280px; gap: 20px; padding: 10px 0; }
+        
         header { grid-column: 1 / -1; text-align: center; padding: 25px 0; }
         .logo-box { max-width: 65px; margin-bottom: 10px; }
         
         .side-panel { position: sticky; top: 10px; height: calc(100vh - 20px); }
         .glass-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; backdrop-filter: blur(10px); }
 
-        /* 左側 Feed：恢復多色彩與狀態 */
+        /* 左侧 FEED 还原细雨布局与色彩 */
         #feed-flow { font-size: 11px; line-height: 1.6; color: var(--text-dim); height: 75vh; overflow-y: hidden; }
         .dot { height: 8px; width: 8px; background-color: var(--accent); border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px var(--accent); animation: blink 1.5s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        /* 中間四個組件：修復超出框 */
+        /* 核心修正：四个大项目容器，恢复大尺寸，绝不超出框 */
         .market-widgets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
         .widget-box { background: #000; border-radius: 10px; border: 1px solid var(--border); height: 290px; overflow: hidden; position: relative; }
         
-        /* 中間組件內部的包裹器，用來縮小內容 */
-        .polymarket-embed-wrapper { transform: scale(0.68); transform-origin: top left; width: 412px; height: 426px; }
+        /* 核心修正：恢复 iframe 原始大比例显示，不缩放 */
+        .widget-box iframe { width: 100%; height: 100%; border: none; }
 
-        /* 右側模塊恢復文案 */
+        /* 右侧模块文案还原 */
         .sentiment-bar { height: 5px; background: linear-gradient(90deg, var(--hot), var(--whale), var(--accent)); border-radius: 3px; position: relative; margin: 10px 0; }
         .sentiment-point { position: absolute; width: 4px; height: 12px; background: #fff; top: -4px; left: 72%; }
-
-        /* 套利計算器文案還原 */
         .calc-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 5px; font-size: 12px; margin-top: 5px; box-sizing: border-box; outline: none; }
         .calc-res { margin-top: 10px; padding: 10px; background: rgba(35, 134, 54, 0.1); border-radius: 8px; text-align: center; border: 1px dashed var(--accent); }
 
-        /* 恢復 18 個信號卡片列表 */
+        /* 核心修正：恢复 18 个信号卡片列表 */
         .signals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 40px; }
-        
-        /* 統計數據還原 */
-        .stats-bar { display: flex; justify-content: center; gap: 45px; margin: 15px 0; }
+        .stats-bar { display: flex; justify(content: center; gap: 45px; margin: 15px 0; }
         .stat-val { font-size: 32px; font-weight: 800; color: var(--text-bright); font-family: monospace; }
         
-        /* 卡片還原細節 */
         .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; position: relative; transition: 0.2s; }
         .card:hover { border-color: var(--link); transform: translateY(-2px); }
         .countdown { position: absolute; top: 12px; right: 12px; font-size: 9px; color: var(--hot); font-weight: bold; border: 1px solid var(--hot); padding: 2px 5px; border-radius: 4px; }
@@ -66,35 +58,27 @@
         .btn-primary { background: var(--accent); }
         .btn-secondary { background: #30363d; }
 
-        .lang-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 6px 16px; border-radius: 20px; font-size: 12px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .lang-btn:hover { border-color: var(--link); color: var(--link); }
+        .social-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 12px; }
+        .social-links a { color: var(--link); text-decoration: none; font-size: 12px; font-weight: bold; border: 1px solid var(--border); padding: 6px 14px; border-radius: 20px; }
 
-        footer { margin-top: 50px; padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
-        .trust-icons { display: flex; justify-content: center; align-items: center; gap: 30px; opacity: 0.35; filter: grayscale(100%); }
-
-        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center; }
-        .modal-content { background:var(--bg); border:1px solid var(--link); padding:20px; border-radius:12px; text-align:center; }
+        footer { margin-top: 50px; padding: 40px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 11px; }
     </style>
 </head>
 <body>
-
-<div id="whale-alert">🐋 巨鯨警報：檢測到大額資金流向熱門項目！</div>
-<div id="posterModal" class="modal"><div class="modal-content"><img id="posterPreview" style="max-width:100%;"><br><button class="btn btn-secondary" style="margin-top:15px; width:100%;" onclick="this.closest('.modal').style.display='none'">關閉</button></div></div>
-<div id="qrcode" style="display:none;"></div>
 
 <div class="main-wrapper">
     <header>
         <img src="logo.png" class="logo-box">
         <h1 style="color:var(--text-bright); font-size: 36px; margin: 0;">PolyAxiom 捕捉引擎</h1>
-        <p style="font-size:14px; color:var(--text-dim); margin-top: 10px;">專注於預測市場的數據導航與深度審計</p>
+        <p style="font-size:14px; color:var(--text-dim); margin-top: 10px;">专注于预测市场的数据导航与深度审计</p>
         <div class="stats-bar">
-            <div><span class="stat-val">5,010+</span><div style="font-size:11px; color:var(--text-dim);">今日掃描信號</div></div>
-            <div><span class="stat-val">$10807.61M</span><div style="font-size:11px; color:var(--text-dim);">實時監控資金</div></div>
+            <div><span class="stat-val">5,010+</span><div style="font-size:11px; color:var(--text-dim);">今日扫描信号</div></div>
+            <div><span class="stat-val">$10807.61M</span><div style="font-size:11px; color:var(--text-dim);">实时监控资金</div></div>
         </div>
-        <div class="social-links" style="display:flex; justify-content:center; gap:12px; margin-bottom:20px;">
-            <a href="https://x.com/Poly_Axiom" style="color:var(--link); text-decoration:none; font-size:12px; border:1px solid var(--border); padding:6px 16px; border-radius:20px; font-weight: bold;" target="_blank">𝕏 / Poly_Axiom</a>
-            <a href="https://t.me/PolyAxiom_ZH" style="color:var(--link); text-decoration:none; font-size:12px; border:1px solid var(--border); padding:6px 16px; border-radius:20px; font-weight: bold;" target="_blank">✈️ PolyAxiom_ZH</a>
-            <button class="lang-btn" onclick="toggleTranslate()">🌐 翻譯 / Translate</button>
+        <div class="social-links">
+            <a href="https://x.com/Poly_Axiom" target="_blank">𝕏 / Poly_Axiom</a>
+            <a href="https://t.me/PolyAxiom_ZH" target="_blank">✈️ PolyAxiom_ZH</a>
+            <button onclick="toggleTranslate()" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text); padding:6px 16px; border-radius:20px; font-size:12px; cursor:pointer; font-weight:bold;">🌐 Translation</button>
         </div>
     </header>
 
@@ -111,24 +95,16 @@
     <main>
         <section class="market-widgets">
             <div class="widget-box">
-                <div class="polymarket-embed-wrapper">
-                    <iframe src="https://embed.polymarket.com/market?event=2026-fifa-world-cup-winner-595&theme=dark&r=Axiomcom" width="400" height="420" frameborder="0"></iframe>
-                </div>
+                <iframe src="https://embed.polymarket.com/market?event=2026-fifa-world-cup-winner-595&theme=dark&r=Axiomcom" frameborder="0"></iframe>
             </div>
             <div class="widget-box">
-                <div class="polymarket-embed-wrapper">
-                    <iframe src="https://embed.polymarket.com/market?market=will-bitcoin-reach-1000000-by-december-31-2026-946&theme=dark&r=Axiomcom" width="400" height="420" frameborder="0"></iframe>
-                </div>
+                <iframe src="https://embed.polymarket.com/market?market=will-bitcoin-reach-1000000-by-december-31-2026-946&theme=dark&r=Axiomcom" frameborder="0"></iframe>
             </div>
             <div class="widget-box">
-                <div class="polymarket-embed-wrapper">
-                    <iframe src="https://embed.polymarket.com/market?event=balance-of-power-2026-midterms&theme=dark&r=Axiomcom" width="400" height="420" frameborder="0"></iframe>
-                </div>
+                <iframe src="https://embed.polymarket.com/market?event=balance-of-power-2026-midterms&theme=dark&r=Axiomcom" frameborder="0"></iframe>
             </div>
             <div class="widget-box">
-                <div class="polymarket-embed-wrapper">
-                    <iframe src="https://embed.polymarket.com/market?event=richest-person-on-december-31-2026&theme=dark&r=Axiomcom" width="400" height="420" frameborder="0"></iframe>
-                </div>
+                <iframe src="https://embed.polymarket.com/market?event=richest-person-on-december-31-2026&theme=dark&r=Axiomcom" frameborder="0"></iframe>
             </div>
         </section>
         <div class="signals-grid" id="signals-list"></div>
@@ -143,15 +119,15 @@
 
         <div class="glass-box">
             <div style="font-size:11px; font-weight:bold; color:var(--link); margin-bottom:12px;">🧮 ARBITRAGE CALC</div>
-            <div style="font-size:10px; color:var(--text-dim);">平台 A 價格 (Yes):</div>
+            <div style="font-size:10px; color:var(--text-dim);">平台 A 价格 (Yes):</div>
             <input type="number" id="priceA" class="calc-input" value="0.52" step="0.01" oninput="calcArb()">
-            <div style="font-size:10px; color:var(--text-dim); margin-top:8px;">平台 B 價格 (No):</div>
+            <div style="font-size:10px; color:var(--text-dim); margin-top:8px;">平台 B 价格 (No):</div>
             <input type="number" id="priceB" class="calc-input" value="0.45" step="0.01" oninput="calcArb()">
             <div id="arb-result" class="calc-res">
                 <div style="font-size:10px; color:var(--text-dim);">Est. Profit</div>
                 <div style="font-size:18px; font-weight:800; color:var(--accent);">3.09%</div>
             </div>
-            <a href="https://polymarket.com/?r=Axiomcom" target="_blank" class="btn btn-primary" style="display:block; margin-top:10px; font-size:10px;">執行對衝套利</a>
+            <a href="https://polymarket.com/?r=Axiomcom" target="_blank" class="btn btn-primary" style="display:block; margin-top:10px; font-size:10px;">执行对冲套利</a>
         </div>
 
         <div class="glass-box">
@@ -166,8 +142,8 @@
 </div>
 
 <footer>
-    <div class="trust-icons">
-        <span style="font-size:11px; color:var(--text-dim);">POLYMARKET API &nbsp;&nbsp; KALSHI LIVE &nbsp;&nbsp; DEEPSEEK L40 &nbsp;&nbsp; SOLANA RPC</span>
+    <div style="display:flex; justify-content:center; gap:30px; opacity:0.35;">
+        <span>POLYMARKET API</span><span>KALSHI LIVE</span><span>DEEPSEEK L40</span><span>SOLANA RPC</span>
     </div>
 </footer>
 
@@ -202,7 +178,7 @@
         try {
             const res = await fetch('./data.json?v=' + Date.now());
             const data = await res.json();
-            // 恢復 18 個卡片排版
+            // 核心修正：恢复 18 个信号卡片排版
             document.getElementById('signals-list').innerHTML = data.slice(0, 18).map(item => `
                 <div class="card">
                     <div style="font-size:9px; color:var(--text-dim); text-align:right;">$${item.volume}k Vol.</div>
@@ -212,47 +188,32 @@
                         <div style="font-size:9px; color:var(--text-dim);">WIN PROB</div>
                     </div>
                     <div class="btn-group">
-                        <a href="${item.link}${INVITE_CODE}" class="btn btn-primary" target="_blank">立即下單</a>
-                        <button class="btn btn-secondary">分享海報</button>
+                        <a href="${item.link}${INVITE_CODE}" class="btn btn-primary" target="_blank">立即下单</a>
+                        <button class="btn btn-secondary">分享海报</button>
                     </div>
                 </div>
             `).join('');
         } catch (e) {}
     }
 
-    function addFeed() {
+    setInterval(() => {
         const flow = document.getElementById('feed-flow');
-        const projects = ["World Cup Winner", "BTC reach $100k", "Elon Musk TikTok", "Nvidia Rank #1"];
-        // 恢復多色彩文案
-        const actions = [
-            {t:"買入",c:"#fff"}, 
-            {t:"獲利平倉",c:"#6edc5f"}, 
-            {t:"大額加倉",c:"#f1e05a"}
-        ];
-        
+        const projects = ["GTA VI", "BTC $100k", "Democratic Presidential Nominee", "Nvidia Market Cap", "Fed Interest Rate Cut"];
+        const actions = [{t:"买入",c:"#fff"}, {t:"获利平仓",c:"#6edc5f"}, {t:"大额加仓",c:"#f1e05a"}];
         const p = projects[Math.floor(Math.random()*projects.length)];
         const a = actions[Math.floor(Math.random()*actions.length)];
-        const amt = Math.floor(Math.random()*450)+20;
-
-        if(amt > 380) {
-            const bar = document.getElementById('whale-alert');
-            bar.innerText = `🐋 巨鯨警報：檢測到 $${amt}k 資金砸向 ${p}！`;
-            bar.style.display = 'block';
-            setTimeout(() => bar.style.display = 'none', 3000);
-        }
+        const amt = Math.floor(Math.random()*400)+20;
 
         const div = document.createElement('div');
         div.style.cssText = "border-left:2px solid var(--accent); padding-left:10px; margin-bottom:15px; animation: fadeIn 0.3s;";
         div.innerHTML = `<span style="font-size:9px; color:var(--text-dim);">${new Date().toLocaleTimeString()}</span><br>
-            <b style="color:#fff;">鯨 0x${Math.random().toString(16).slice(2,6)}</b> <span style="color:${a.c}">${a.t}</span> <b style="color:${a.c}">$${amt}k</b><br>
+            <b style="color:#fff;">鲸 0x${Math.random().toString(16).slice(2,6)}</b> <span style="color:${a.c}">${a.t}</span> <b style="color:${a.c}">$${amt}k</b><br>
             <span style="font-size:9px; color:var(--link);">${p}</span>`;
         flow.prepend(div);
         if(flow.children.length > 15) flow.lastElementChild.remove();
-    }
+    }, 4500);
 
     loadSignals();
-    // 讓左側 Feed 動起來
-    setInterval(addFeed, 4000);
 </script>
 </body>
 </html>
