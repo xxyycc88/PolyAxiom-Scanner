@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="favicon.png" />
-    <title>PolyAxiom - 预测市场数据导航</title>
+    <title>PolyAxiom - 預測市場數據導航</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
@@ -14,7 +14,6 @@
         }
         body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* 顶部巨鲸警报 */
         #whale-alert { display: none; position: fixed; top: 0; width: 100%; background: var(--hot); color: #fff; text-align: center; padding: 8px; font-weight: bold; z-index: 10001; font-size: 13px; box-shadow: 0 2px 15px rgba(248,81,73,0.5); }
 
         .main-wrapper { max-width: 1550px; width: 98%; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr 280px; gap: 20px; padding: 10px 0; }
@@ -24,20 +23,21 @@
         .side-panel { position: sticky; top: 10px; height: calc(100vh - 20px); }
         .glass-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; backdrop-filter: blur(10px); }
 
-        /* 计算器 */
+        /* 計算器 */
         .calc-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 5px; font-size: 12px; margin-top: 5px; box-sizing: border-box; outline: none; }
         .calc-input:focus { border-color: var(--link); }
         .calc-res { margin-top: 10px; padding: 10px; background: rgba(35, 134, 54, 0.1); border-radius: 8px; text-align: center; border: 1px dashed var(--accent); }
 
-        /* 核心布局 */
+        /* 核心佈局 */
         .market-widgets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
         .widget-box { background: #000; border-radius: 10px; border: 1px solid var(--border); height: 290px; overflow: hidden; }
-
         .signals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 40px; }
+        
+        /* 統計數據 */
         .stats-bar { display: flex; justify-content: center; gap: 45px; margin: 15px 0; }
         .stat-val { font-size: 32px; font-weight: 800; color: var(--text-bright); font-family: monospace; }
         
-        /* 信号卡片 */
+        /* 信號卡片 */
         .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; position: relative; transition: 0.2s; }
         .card:hover { border-color: var(--link); transform: translateY(-2px); }
         .countdown { position: absolute; top: 12px; right: 12px; font-size: 9px; color: var(--hot); font-weight: bold; border: 1px solid var(--hot); padding: 2px 5px; border-radius: 4px; animation: pulse 2s infinite; }
@@ -55,9 +55,12 @@
         .dot { height: 8px; width: 8px; background-color: var(--accent); border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px var(--accent); animation: blink 1.5s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        /* 底部背书 */
+        /* 翻譯按鈕專用樣式 */
+        .lang-btn { background: transparent; border: 1px solid var(--link); color: var(--link); padding: 6px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .lang-btn:hover { background: rgba(88, 166, 255, 0.1); }
+
         footer { margin-top: 50px; padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
-        .trust-icons { display: flex; justify-content: center; align-items: center; gap: 30px; opacity: 0.35; filter: grayscale(100%) blur(0.2px); }
+        .trust-icons { display: flex; justify-content: center; align-items: center; gap: 30px; opacity: 0.35; filter: grayscale(100%); }
 
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center; }
         .modal-content { background:var(--bg); border:1px solid var(--link); padding:20px; border-radius:12px; text-align:center; }
@@ -65,22 +68,23 @@
 </head>
 <body>
 
-<div id="whale-alert">🐋 巨鲸警报：检测到大额资金流向热门项目！</div>
-<div id="posterModal" class="modal"><div class="modal-content"><img id="posterPreview" style="max-width:100%;"><br><button class="btn btn-secondary" style="margin-top:15px; width:100%;" onclick="this.closest('.modal').style.display='none'">关闭</button></div></div>
+<div id="whale-alert">🐋 巨鯨警報：檢測到大額資金流向熱門項目！</div>
+<div id="posterModal" class="modal"><div class="modal-content"><img id="posterPreview" style="max-width:100%;"><br><button class="btn btn-secondary" style="margin-top:15px; width:100%;" onclick="this.closest('.modal').style.display='none'">關閉</button></div></div>
 <div id="qrcode" style="display:none;"></div>
 
 <div class="main-wrapper">
     <header>
         <img src="logo.png" class="logo-box">
         <h1 style="color:var(--text-bright); font-size: 36px; margin: 0;">PolyAxiom 捕捉引擎</h1>
-        <p style="font-size:14px; color:var(--text-dim); margin-top: 10px;">专注于预测市场的数据导航与深度审计</p>
+        <p style="font-size:14px; color:var(--text-dim); margin-top: 10px;">專注於預測市場的數據導航與深度審計</p>
         <div class="stats-bar">
-            <div><span class="stat-val" id="stat-scan">5,010+</span><div style="font-size:11px; color:var(--text-dim);">今日扫描信号</div></div>
-            <div><span class="stat-val" id="stat-vol">$10807.61M</span><div style="font-size:11px; color:var(--text-dim);">实时监控资金</div></div>
+            <div><span class="stat-val" id="stat-scan">5,010+</span><div style="font-size:11px; color:var(--text-dim);">今日掃描信號</div></div>
+            <div><span class="stat-val" id="stat-vol">$10807.61M</span><div style="font-size:11px; color:var(--text-dim);">實時監控資金</div></div>
         </div>
         <div class="social-links" style="display:flex; justify-content:center; gap:12px; margin-bottom:20px;">
             <a href="https://x.com/Poly_Axiom" style="color:var(--link); text-decoration:none; font-size:12px; border:1px solid var(--border); padding:6px 14px; border-radius:20px;" target="_blank">𝕏 / Poly_Axiom</a>
             <a href="https://t.me/PolyAxiom_ZH" style="color:var(--link); text-decoration:none; font-size:12px; border:1px solid var(--border); padding:6px 14px; border-radius:20px;" target="_blank">✈️ PolyAxiom_ZH</a>
+            <button class="lang-btn" onclick="toggleTranslate()">🌐 翻譯 / Translate</button>
         </div>
     </header>
 
@@ -115,15 +119,15 @@
 
         <div class="glass-box">
             <div style="font-size:11px; font-weight:bold; color:var(--link); margin-bottom:12px;">🧮 ARBITRAGE CALC</div>
-            <div style="font-size:10px; color:var(--text-dim);">平台 A 价格 (Yes):</div>
+            <div style="font-size:10px; color:var(--text-dim);">平台 A 價格 (Yes):</div>
             <input type="number" id="priceA" class="calc-input" value="0.52" step="0.01" oninput="calcArb()">
-            <div style="font-size:10px; color:var(--text-dim); margin-top:8px;">平台 B 价格 (No):</div>
+            <div style="font-size:10px; color:var(--text-dim); margin-top:8px;">平台 B 價格 (No):</div>
             <input type="number" id="priceB" class="calc-input" value="0.45" step="0.01" oninput="calcArb()">
             <div id="arb-result" class="calc-res">
                 <div style="font-size:10px; color:var(--text-dim);">Est. Profit</div>
                 <div style="font-size:18px; font-weight:800; color:var(--accent);">3.09%</div>
             </div>
-            <a href="https://polymarket.com/?r=Axiomcom" target="_blank" class="btn btn-primary" style="display:block; margin-top:10px; font-size:10px;">执行对冲套利</a>
+            <a href="https://polymarket.com/?r=Axiomcom" target="_blank" class="btn btn-primary" style="display:block; margin-top:10px; font-size:10px;">執行對衝套利</a>
         </div>
 
         <div class="glass-box">
@@ -144,11 +148,28 @@
         <span style="font-size:12px; font-weight:800;">DEEPSEEK L40</span>
         <span style="font-size:12px; font-weight:800;">SOLANA RPC</span>
     </div>
-    <p style="font-size:10px; color:var(--text-dim); margin-top:20px;">&copy; 2026 PolyAxiom Terminal. 专业级数据引擎</p>
+    <p style="font-size:10px; color:var(--text-dim); margin-top:20px;">&copy; 2026 PolyAxiom Terminal. 專業級數據引擎</p>
 </footer>
+
+<div id="google_translate_element" style="display:none;"></div>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'zh-CN', includedLanguages: 'en,zh-CN'}, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
     const INVITE_CODE = "?r=Axiomcom";
+
+    // 翻譯切換功能
+    function toggleTranslate() {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+            select.value = select.value === 'en' ? 'zh-CN' : 'en';
+            select.dispatchEvent(new Event('change'));
+        }
+    }
 
     function calcArb() {
         const pA = parseFloat(document.getElementById('priceA').value);
@@ -168,7 +189,7 @@
             const cleanData = data.sort((a, b) => parseFloat(b.volume) - parseFloat(a.volume)).slice(0, 18);
             document.getElementById('signals-list').innerHTML = cleanData.map((item, idx) => `
                 <div class="card">
-                    <div class="countdown">即将封盘: ${Math.floor(Math.random()*48)+1}H</div>
+                    <div class="countdown">即將封盤: ${Math.floor(Math.random()*48)+1}H</div>
                     <div style="display:flex; justify-content:space-between; font-size:9px;">
                         <span style="color:${parseFloat(item.volume)>150?'var(--whale)':'var(--hot)'}; font-weight:bold;">${parseFloat(item.volume)>150?'🐋 SMART MONEY':'🔥 TRENDING'}</span>
                         <span style="color:var(--text-dim);">$${item.volume}k Vol.</span>
@@ -179,8 +200,8 @@
                         <div style="font-size:9px; color:var(--text-dim);">WIN PROB</div>
                     </div>
                     <div class="btn-group">
-                        <a href="${item.link}${INVITE_CODE}" class="btn btn-primary" target="_blank">立即下单</a>
-                        <button class="btn btn-secondary" onclick="genPoster(${idx})">分享海报</button>
+                        <a href="${item.link}${INVITE_CODE}" class="btn btn-primary" target="_blank">立即下單</a>
+                        <button class="btn btn-secondary" onclick="genPoster(${idx})">分享海報</button>
                     </div>
                 </div>
             `).join('');
@@ -190,15 +211,15 @@
 
     function addFeed() {
         const flow = document.getElementById('feed-flow');
-        const projects = ["World Cup Winner", "BTC reach $100k", "Elon Musk TikTok", "Nvidia Rank #1", "Fed Interest Rate"];
-        const actions = [{t:"买入",c:"#fff",w:""}, {t:"获利平仓",c:"#6edc5f",w:""}, {t:"大额加仓",c:"#f1e05a",w:"font-weight:bold;"}];
+        const projects = ["World Cup Winner", "BTC reach $100k", "Elon Musk TikTok", "Nvidia Rank #1"];
+        const actions = [{t:"買入",c:"#fff"}, {t:"獲利平倉",c:"#6edc5f"}, {t:"大額加倉",c:"#f1e05a"}];
         const p = projects[Math.floor(Math.random()*projects.length)];
         const a = actions[Math.floor(Math.random()*actions.length)];
         const amt = Math.floor(Math.random()*450)+20;
 
         if(amt > 380) {
             const bar = document.getElementById('whale-alert');
-            bar.innerText = `🐋 巨鲸警报：检测到 $${amt}k 资金砸向 ${p}！`;
+            bar.innerText = `🐋 巨鯨警報：檢測到 $${amt}k 資金砸向 ${p}！`;
             bar.style.display = 'block';
             setTimeout(() => bar.style.display = 'none', 3000);
         }
@@ -206,7 +227,7 @@
         const div = document.createElement('div');
         div.style.cssText = "border-left:2px solid var(--accent); padding-left:10px; margin-bottom:15px; animation: fadeIn 0.3s;";
         div.innerHTML = `<span style="font-size:9px; color:var(--text-dim);">${new Date().toLocaleTimeString()}</span><br>
-            <b style="color:#fff;">鲸 0x${Math.random().toString(16).slice(2,6)}</b> <span style="color:${a.c}; ${a.w}">${a.t}</span> <b style="color:${a.c}; ${a.w}">$${amt}k</b><br>
+            <b style="color:#fff;">鯨 0x${Math.random().toString(16).slice(2,6)}</b> <span style="color:${a.c};">${a.t}</span> <b style="color:${a.c};">$${amt}k</b><br>
             <span style="font-size:9px; color:var(--link); opacity:0.8;">${p}</span>`;
         flow.prepend(div);
         if(flow.children.length > 15) flow.lastElementChild.remove();
@@ -231,10 +252,6 @@
     loadSignals();
     setInterval(addFeed, 4500);
     setInterval(loadSignals, 60000);
-    setInterval(() => {
-        let s = parseInt(document.getElementById('stat-scan').innerText);
-        if(Math.random()>0.4) document.getElementById('stat-scan').innerText = (s+1).toLocaleString()+"+";
-    }, 4000);
 </script>
 </body>
 </html>
