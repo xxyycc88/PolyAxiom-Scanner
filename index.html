@@ -12,7 +12,12 @@
             --text: #adbac7; --text-bright: #ffffff; --text-dim: #768390; --link: #58a6ff;
             --hot: #f85149; --whale: #f1e05a; --border: #30363d;
         }
-        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; padding: 0; overflow-x: hidden; top: 0 !important; }
+        
+        /* === 徹底幹掉 Google 翻譯自帶的難看頂部欄和彈窗 === */
+        #goog-gt-tt, .goog-te-balloon-frame, .goog-te-banner-frame { display: none !important; }
+        .goog-text-highlight { background: transparent !important; box-shadow: none !important; color: inherit !important; }
+        body > .skiptranslate { display: none !important; }
         
         #whale-alert { display: none; position: fixed; top: 0; width: 100%; background: var(--hot); color: #fff; text-align: center; padding: 8px; font-weight: bold; z-index: 10001; font-size: 13px; box-shadow: 0 2px 15px rgba(248,81,73,0.5); }
 
@@ -55,9 +60,9 @@
         .dot { height: 8px; width: 8px; background-color: var(--accent); border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px var(--accent); animation: blink 1.5s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        /* 翻譯按鈕專用樣式 */
-        .lang-btn { background: transparent; border: 1px solid var(--link); color: var(--link); padding: 6px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; font-weight: bold; }
-        .lang-btn:hover { background: rgba(88, 166, 255, 0.1); }
+        /* === 翻譯按鈕 UI 優化，與 X 和 TG 按鈕統一 === */
+        .lang-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 6px 16px; border-radius: 20px; font-size: 12px; cursor: pointer; font-weight: bold; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .lang-btn:hover { border-color: var(--link); color: var(--link); background: rgba(88, 166, 255, 0.05); }
 
         footer { margin-top: 50px; padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
         .trust-icons { display: flex; justify-content: center; align-items: center; gap: 30px; opacity: 0.35; filter: grayscale(100%); }
@@ -82,9 +87,12 @@
             <div><span class="stat-val" id="stat-vol">$10807.61M</span><div style="font-size:11px; color:var(--text-dim);">實時監控資金</div></div>
         </div>
         <div class="social-links" style="display:flex; justify-content:center; gap:12px; margin-bottom:20px;">
-            <a href="https://x.com/Poly_Axiom" style="color:var(--link); text-decoration:none; font-size:12px; border:1px solid var(--border); padding:6px 14px; border-radius:20px;" target="_blank">𝕏 / Poly_Axiom</a>
-            <a href="https://t.me/PolyAxiom_ZH" style="color:var(--link); text-decoration:none; font-size:12px; border:1px solid var(--border); padding:6px 14px; border-radius:20px;" target="_blank">✈️ PolyAxiom_ZH</a>
-            <button class="lang-btn" onclick="toggleTranslate()">🌐 翻譯 / Translate</button>
+            <a href="https://x.com/Poly_Axiom" style="color:var(--link); text-decoration:none; font-size:12px; border:1px solid var(--border); padding:6px 16px; border-radius:20px; font-weight: bold;" target="_blank">𝕏 / Poly_Axiom</a>
+            <a href="https://t.me/PolyAxiom_ZH" style="color:var(--link); text-decoration:none; font-size:12px; border:1px solid var(--border); padding:6px 16px; border-radius:20px; font-weight: bold;" target="_blank">✈️ PolyAxiom_ZH</a>
+            <button class="lang-btn" onclick="toggleTranslate()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l6 6M19 8l-6 6M12 2v20M2 12h20"/></svg>
+                翻譯 / Translate
+            </button>
         </div>
     </header>
 
@@ -151,10 +159,10 @@
     <p style="font-size:10px; color:var(--text-dim); margin-top:20px;">&copy; 2026 PolyAxiom Terminal. 專業級數據引擎</p>
 </footer>
 
-<div id="google_translate_element" style="display:none;"></div>
+<div id="google_translate_element" style="display:none; visibility: hidden;"></div>
 <script type="text/javascript">
     function googleTranslateElementInit() {
-        new google.translate.TranslateElement({pageLanguage: 'zh-CN', includedLanguages: 'en,zh-CN'}, 'google_translate_element');
+        new google.translate.TranslateElement({pageLanguage: 'zh-CN', includedLanguages: 'en,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');
     }
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -162,12 +170,15 @@
 <script>
     const INVITE_CODE = "?r=Axiomcom";
 
-    // 翻譯切換功能
+    // 高級翻譯切換功能：無縫嵌入，不彈垃圾欄
     function toggleTranslate() {
         const select = document.querySelector('.goog-te-combo');
         if (select) {
             select.value = select.value === 'en' ? 'zh-CN' : 'en';
             select.dispatchEvent(new Event('change'));
+        } else {
+            // 如果加載較慢，嘗試重新初始化
+            googleTranslateElementInit();
         }
     }
 
