@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="favicon.png" />
-    <title>PolyAxiom - Professional Alpha Terminal</title>
+    <title>PolyAxiom - Alpha Signals Engine</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
@@ -14,78 +14,95 @@
         }
         body { 
             background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; 
-            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; 
-            background-image: radial-gradient(circle at 50% 50%, #161b22 0%, #0d1117 100%);
+            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            overflow-x: hidden; /* 防止横向滚动条 */
         }
         
-        /* 三栏式核心布局 */
+        /* 核心三栏布局：修正挤压问题 */
         .main-wrapper { 
-            max-width: 1550px; width: 100%; padding: 20px; box-sizing: border-box; 
-            display: grid; grid-template-columns: 280px 1fr 300px; gap: 20px; 
+            max-width: 1500px; 
+            width: 95%; 
+            margin: 0 auto;
+            display: grid; 
+            /* 固定左右宽度，中间 minmax(0, 1fr) 是防止被挤爆的关键 */
+            grid-template-columns: 260px minmax(0, 1fr) 280px; 
+            gap: 25px; 
+            padding: 20px 0;
+            box-sizing: border-box;
         }
-        @media (max-width: 1300px) { .main-wrapper { grid-template-columns: 1fr; } .side-panel { display: none; } }
 
-        /* 统一毛玻璃效果 */
-        .glass-box { background: var(--card-bg); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        /* 顶部 Header 占满全宽 */
+        header { grid-column: 1 / -1; text-align: center; padding: 30px 0; position: relative; }
+        
+        /* 中间内容区 */
+        main { min-width: 0; width: 100%; display: flex; flex-direction: column; }
 
-        /* 左侧：实时终端流 */
-        .side-panel { position: sticky; top: 20px; height: calc(100vh - 40px); overflow: hidden; display: flex; flex-direction: column; }
-        .feed-title { font-size: 12px; color: var(--link); font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
-        .feed-flow { flex: 1; overflow-y: hidden; font-size: 12px; line-height: 1.6; color: var(--text-dim); }
-        .feed-item { margin-bottom: 15px; border-left: 2px solid var(--accent); padding-left: 10px; animation: slideIn 0.4s ease-out; }
+        /* 左侧/右侧面板 */
+        .side-panel { position: sticky; top: 20px; height: fit-content; max-height: 85vh; overflow: hidden; }
+        .glass-box { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
 
-        /* 右侧：情绪仪表盘 */
-        .gauge-section { display: flex; flex-direction: column; gap: 20px; }
-        .gauge-box { text-align: center; }
-        .gauge-track { width: 100%; height: 8px; background: linear-gradient(90deg, var(--hot), #f1e05a, var(--accent)); border-radius: 4px; margin: 15px 0; position: relative; }
-        .gauge-pointer { position: absolute; width: 4px; height: 16px; background: #fff; top: -4px; left: 50%; border-radius: 2px; box-shadow: 0 0 10px #fff; transition: 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+        /* 四个核心组件网格修正 */
+        .widget-section { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 35px; 
+            width: 100%;
+        }
+        .widget-box { background: #000; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; height: 302px; width: 100%; }
 
-        /* 顶部看板 */
-        header { grid-column: 1 / -1; text-align: center; padding: 40px 0 20px 0; position: relative; }
-        .stats-bar { display: flex; justify-content: center; gap: 50px; margin-top: 25px; flex-wrap: wrap; }
-        .stat-item { text-align: center; min-width: 140px; }
-        .stat-val { font-size: 30px; font-weight: 800; color: var(--text-bright); display: block; font-family: monospace; }
-        .dot { height: 10px; width: 10px; background-color: var(--accent); border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 10px var(--accent); animation: blink 2s infinite; }
+        /* 信号卡片平铺 */
+        .container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 15px; 
+            width: 100%;
+        }
 
-        /* 跑马灯 */
+        /* 跑马灯修正 */
         .ticker-wrap { width: 100%; background: #000; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 25px; overflow: hidden; padding: 12px 0; }
         .ticker { display: flex; white-space: nowrap; animation: ticker-kb 60s linear infinite; }
-        .ticker-item { color: var(--link); font-size: 13px; font-weight: bold; margin-right: 60px; }
+        .ticker-item { color: var(--link); font-size: 13px; font-weight: bold; margin-right: 60px; flex-shrink: 0; }
 
-        /* 中间四个核心组件 */
-        .widget-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
-        @media (max-width: 1000px) { .widget-section { grid-template-columns: 1fr; } }
-        .widget-box { background: #000; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; height: 302px; }
-
-        /* 信号卡片列表 */
-        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; transition: 0.3s; }
-        .card:hover { border-color: var(--link); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-        .title { font-size: 14px; font-weight: 600; color: var(--text-bright); min-height: 42px; margin: 12px 0; line-height: 1.4; }
-        .stats-box { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        /* 其他原有样式保持 */
+        .stats-bar { display: flex; justify-content: center; gap: 40px; margin-top: 20px; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-val { font-size: 28px; font-weight: 800; color: var(--text-bright); font-family: monospace; }
+        .dot { height: 10px; width: 10px; background-color: var(--accent); border-radius: 50%; display: inline-block; margin-right: 6px; box-shadow: 0 0 10px var(--accent); animation: blink 2s infinite; }
         
-        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { display: block; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; cursor: pointer; border: none; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; transition: 0.3s; }
+        .card:hover { border-color: var(--link); transform: translateY(-4px); }
+        .title { font-size: 14px; font-weight: 600; color: var(--text-bright); min-height: 40px; margin: 12px 0; line-height: 1.4; }
+        .stats-box { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn { padding: 10px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; border: none; }
         .btn-primary { background: var(--accent); color: white; }
-        .btn-secondary { background: #30363d; color: var(--text-bright); }
+        .btn-secondary { background: #30363d; color: white; }
 
-        .lang-switch { position: absolute; top: 20px; right: 20px; background: rgba(13, 17, 23, 0.9); border: 1px solid var(--link); color: var(--link); padding: 6px 16px; border-radius: 20px; cursor: pointer; z-index: 100; font-size: 12px; font-weight: bold; }
+        /* 仪表盘 */
+        .gauge-track { width: 100%; height: 6px; background: linear-gradient(90deg, var(--hot), #f1e05a, var(--accent)); border-radius: 3px; margin: 15px 0; position: relative; }
+        .gauge-pointer { position: absolute; width: 4px; height: 12px; background: #fff; top: -3px; left: 50%; border-radius: 2px; transition: 0.8s; }
+
+        .lang-switch { position: absolute; top: 20px; right: 0; background: none; border: 1px solid var(--link); color: var(--link); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; }
+
+        @media (max-width: 1200px) {
+            .main-wrapper { grid-template-columns: 1fr; width: 98%; padding: 10px; }
+            .side-panel { display: none; }
+        }
 
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        @keyframes ticker-kb { 0% { transform: translateX(20%); } 100% { transform: translateX(-100%); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes ticker-kb { 0% { transform: translateX(10%); } 100% { transform: translateX(-100%); } }
 
-        /* 海报 Modal 保留 */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 16px; text-align: center; max-width: 500px; border: 1px solid var(--link); }
+        .modal-content { background: var(--card-bg); padding: 25px; border-radius: 12px; text-align: center; max-width: 450px; border: 1px solid var(--link); }
     </style>
 </head>
 <body>
 
 <div class="modal" id="posterModal">
     <div class="modal-content">
-        <img id="posterPreview" style="max-width:100%; border-radius:8px; border: 1px solid #30363d;">
-        <p id="posterTip" style="color:var(--text-dim); margin: 20px 0; font-size: 14px;"></p>
+        <img id="posterPreview" style="max-width:100%; border-radius:6px; border: 1px solid #30363d;">
+        <p id="posterTip" style="color:var(--text-dim); margin: 15px 0; font-size: 13px;"></p>
         <button class="btn btn-primary" style="width:100%" onclick="closeModal()">关闭预览</button>
     </div>
 </div>
@@ -93,120 +110,97 @@
 <div class="main-wrapper">
     <header>
         <button class="lang-switch" onclick="toggleLang()" id="langBtn">English</button>
-        <img src="logo.png" style="max-width:100px; margin-bottom:15px;">
-        <h1 id="mainTitle" style="color: var(--text-bright); font-size: 32px; margin: 0;"></h1>
-        <p id="subTitle" style="color: var(--text-dim); margin-top: 10px; font-size: 15px;"></p>
-
+        <img src="logo.png" style="max-width:80px; margin-bottom:10px;">
+        <h1 id="mainTitle" style="color: var(--text-bright); font-size: 28px; margin: 0;"></h1>
+        <p id="subTitle" style="color: var(--text-dim); margin-top: 8px; font-size: 14px;"></p>
         <div class="stats-bar">
-            <div class="stat-item"><span class="stat-val"><span class="dot"></span>LIVE</span><span class="stat-label" id="label-status">系统状态</span></div>
-            <div class="stat-item"><span class="stat-val" id="stat-scan">4,993+</span><span class="stat-label" id="label-scan">今日扫描项目</span></div>
-            <div class="stat-item"><span class="stat-val" id="stat-vol">$10807.14M</span><span class="stat-label" id="label-vol">捕捉异动资金</span></div>
+            <div class="stat-item"><span class="stat-val"><span class="dot"></span>LIVE</span><div style="font-size:10px; color:var(--text-dim);" id="label-status">系统状态</div></div>
+            <div class="stat-item"><span class="stat-val" id="stat-scan">4,993+</span><div style="font-size:10px; color:var(--text-dim);" id="label-scan">今日扫描</div></div>
+            <div class="stat-item"><span class="stat-val" id="stat-vol">$10807.14M</span><div style="font-size:10px; color:var(--text-dim);" id="label-vol">捕捉资金</div></div>
         </div>
     </header>
 
     <aside class="side-panel glass-box">
-        <div class="feed-title">📡 ALPHA TERMINAL FEED</div>
-        <div class="feed-flow" id="feed-flow"></div>
+        <div style="font-size:11px; color:var(--link); font-weight:bold; margin-bottom:15px;">📡 ALPHA FEED</div>
+        <div id="feed-flow" style="font-size:11px; line-height:1.6; color:var(--text-dim);"></div>
     </aside>
 
     <main>
-        <div class="ticker-wrap">
-            <div class="ticker" id="live-ticker"></div>
-        </div>
-
+        <div class="ticker-wrap"><div class="ticker" id="live-ticker"></div></div>
         <section class="widget-section">
             <div class="widget-box"><iframe src="https://embed.polymarket.com/market?event=2026-fifa-world-cup-winner-595&rotate=true&theme=dark&liveactivity=true&border=false" width="100%" height="300" frameborder="0"></iframe></div>
             <div class="widget-box"><iframe src="https://embed.polymarket.com/market?event=balance-of-power-2026-midterms&rotate=true&theme=dark&liveactivity=true&border=false" width="100%" height="300" frameborder="0"></iframe></div>
             <div class="widget-box"><iframe src="https://embed.polymarket.com/market?market=will-bitcoin-reach-1000000-by-december-31-2026-946&theme=dark&liveactivity=true&border=false" width="100%" height="300" frameborder="0"></iframe></div>
             <div class="widget-box"><iframe src="https://embed.polymarket.com/market?event=richest-person-on-december-31-2026&rotate=true&theme=dark&liveactivity=true&border=false" width="100%" height="300" frameborder="0"></iframe></div>
         </section>
-
         <div class="container" id="signals-list"></div>
     </main>
 
-    <aside class="side-panel gauge-section">
-        <div class="glass-box gauge-box">
-            <div style="font-size:13px; font-weight:bold; color:#fff;">MARKET SENTIMENT</div>
+    <aside class="side-panel">
+        <div class="glass-box" style="margin-bottom:15px;">
+            <div style="font-size:11px; font-weight:bold; color:#fff; text-align:center;">MARKET SENTIMENT</div>
             <div class="gauge-track"><div class="gauge-pointer" id="gauge-dot"></div></div>
-            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-dim);">
-                <span>FEAR</span><span>GREED</span>
-            </div>
+            <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-dim);"><span>FEAR</span><span>GREED</span></div>
         </div>
-
         <div class="glass-box">
-            <div style="font-size:13px; font-weight:bold; color:var(--accent); margin-bottom:12px;">🚀 TOP GAINERS (1H)</div>
-            <div id="gainers-list" style="font-size:12px; color:var(--text-bright);">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>World Cup Yes</span><b style="color:var(--accent)">+14.2%</b></div>
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>BTC $1M Yes</span><b style="color:var(--accent)">+6.8%</b></div>
-                <div style="display:flex; justify-content:space-between;"><span>Midterms GOP</span><b style="color:var(--accent)">+3.1%</b></div>
+            <div style="font-size:11px; font-weight:bold; color:var(--accent); margin-bottom:12px;">🚀 TOP GAINERS</div>
+            <div id="gainers-list" style="font-size:11px; color:var(--text-bright);">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>World Cup Yes</span><b style="color:var(--accent)">+14.2%</b></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>BTC $1M Yes</span><b style="color:var(--accent)">+6.8%</b></div>
             </div>
         </div>
     </aside>
-</div>
 
-<footer style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 13px; border-top: 1px solid var(--border); width: 100%;">
-    <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 25px;">
-        <a href="https://t.me/XXYY_CC" target="_blank" style="color:var(--link); text-decoration: none; font-weight: bold;">Telegram</a>
-        <a href="https://x.com/XXYYCC88" target="_blank" style="color:var(--link); text-decoration: none; font-weight: bold;">Twitter (X)</a>
-    </div>
-    <p>© 2026 PolyAxiom.com | Official Polymarket Affiliate</p>
-</footer>
+    <footer style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: var(--text-dim); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px;">
+        <p>© 2026 PolyAxiom.com | Official Polymarket Affiliate</p>
+    </footer>
+</div>
 
 <div id="qrcode" style="display:none;"></div>
 
 <script>
     const i18n = {
-        'zh': {
-            mainTitle: "PolyAxiom 捕捉引擎", subTitle: "实时扫描 Polymarket 巨鲸大单 & 资金流向",
-            prob: "当前胜率", btnBet: "立即下单", btnShare: "分享海报", langBtn: "English", posterTip: "长按保存图片分享",
-            lStatus: "系统状态", lScan: "今日扫描项目", lVol: "捕捉异动资金", tagReward: "💎 收益加成"
-        },
-        'en': {
-            mainTitle: "PolyAxiom Engine", subTitle: "Live Scanning Polymarket Whale Moves",
-            prob: "Win Prob", btnBet: "Bet Now", btnShare: "Share Alpha", langBtn: "简体中文", posterTip: "Long press to save",
-            lStatus: "Status", lScan: "Items Scanned", lVol: "Alpha Volume", tagReward: "💎 Rewards"
-        }
+        'zh': { mainTitle: "PolyAxiom 捕捉引擎", subTitle: "实时扫描 Polymarket 巨鲸大单 & 资金流向", prob: "当前胜率", btnBet: "立即下单", btnShare: "分享海报", langBtn: "English", posterTip: "长按保存图片分享", lStatus: "系统状态", lScan: "今日扫描", lVol: "捕捉资金", tagReward: "💎 收益加成" },
+        'en': { mainTitle: "PolyAxiom Engine", subTitle: "Live Scanning Polymarket Whale Moves", prob: "Win Prob", btnBet: "Bet Now", btnShare: "Share Alpha", langBtn: "简体中文", posterTip: "Long press to save", lStatus: "Status", lScan: "Scanned", lVol: "Alpha Vol", tagReward: "💎 Rewards" }
     };
 
     let currentLang = localStorage.getItem('polyaxiom_lang') || 'zh';
     let currentSignalsData = [];
 
-    // 动态流水灯与快讯
-    const markets = ["世界杯盤口", "2026中期選舉", "BTC $100萬盤口", "NBA 冠軍盤口", "首富盤口", "ETH 盤口"];
+    // 跑马灯与 Feed 逻辑
+    const markets = ["世界杯盤口", "2026中期選舉", "BTC $100萬盤口", "NBA 冠軍盤口", "首富盤口"];
     const actions = ["買入", "獲利平倉", "大額加倉"];
     
-    function generateOneTicker() {
+    function generateTicker() {
         const whale = "0x" + Math.random().toString(16).slice(2, 4) + "..." + Math.random().toString(16).slice(2, 4);
-        const amount = "$" + (Math.floor(Math.random() * 90) + 10) + "," + (Math.floor(Math.random() * 900) + 100);
+        const amount = "$" + (Math.floor(Math.random() * 90) + 10) + "k";
         return `🐋 巨鯨 ${whale} ${actions[Math.floor(Math.random()*actions.length)]} <b>${amount}</b> ${markets[Math.floor(Math.random()*markets.length)]}`;
     }
 
-    // 左侧实时 Feed 逻辑
-    function addFeedItem() {
+    function addFeed() {
         const flow = document.getElementById('feed-flow');
         const item = document.createElement('div');
-        item.className = 'feed-item';
-        item.innerHTML = `<span style="color:var(--text-dim); font-size:10px;">[${new Date().toLocaleTimeString()}]</span><br>${generateOneTicker()}`;
+        item.style.marginBottom = "12px";
+        item.style.borderLeft = "2px solid var(--accent)";
+        item.style.paddingLeft = "8px";
+        item.innerHTML = `<span style="color:var(--text-dim); font-size:9px;">${new Date().toLocaleTimeString()}</span><br>${generateTicker()}`;
         flow.prepend(item);
-        if(flow.children.length > 15) flow.lastElementChild.remove();
-        // 随机波动指针
+        if(flow.children.length > 12) flow.lastElementChild.remove();
         document.getElementById('gauge-dot').style.left = (Math.random() * 80 + 10) + '%';
     }
-    setInterval(addFeedItem, 5000);
-    addFeedItem();
+    setInterval(addFeed, 5000); addFeed();
 
-    let tickerItems = Array.from({length: 8}, generateOneTicker);
+    let tickerItems = Array.from({length: 6}, generateTicker);
     function refreshTicker() { document.getElementById('live-ticker').innerHTML = tickerItems.concat(tickerItems).map(t => `<div class="ticker-item">${t}</div>`).join(''); }
-    setInterval(() => { tickerItems.shift(); tickerItems.push(generateOneTicker()); refreshTicker(); }, 10000);
+    setInterval(() => { tickerItems.shift(); tickerItems.push(generateTicker()); refreshTicker(); }, 8000);
     refreshTicker();
 
-    // 核心 UI 更新逻辑
+    // 核心 UI
     function updateUI() {
         const texts = i18n[currentLang];
-        document.getElementById('mainTitle').innerHTML = texts.mainTitle + ' <span class="badge" style="background:var(--link); color:white; font-size:10px; padding:2px 8px; border-radius:4px; vertical-align:middle; margin-left:8px;">Official Builder</span>';
+        document.getElementById('mainTitle').innerText = texts.mainTitle;
         document.getElementById('subTitle').innerText = texts.subTitle;
         document.getElementById('langBtn').innerText = texts.langBtn;
-        document.getElementById('posterTip').innerText = texts.posterTip;
         document.getElementById('label-status').innerText = texts.lStatus;
         document.getElementById('label-scan').innerText = texts.lScan;
         document.getElementById('label-vol').innerText = texts.lVol;
@@ -224,7 +218,6 @@
                 const prob = parseFloat(item.odds);
                 return !title.includes("jinping") && prob >= 2 && prob <= 98;
             });
-            currentSignalsData.sort((a, b) => (b.is_whale - a.is_whale) || (b.volume - a.volume));
             renderSignals();
         } catch (e) { console.error(e); }
     }
@@ -234,15 +227,14 @@
         const texts = i18n[currentLang];
         container.innerHTML = currentSignalsData.map((item, index) => `
             <div class="card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                    <span class="tag ${item.is_whale ? 'whale-tag' : 'hot-tag'}" style="font-weight:bold; font-size:11px; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">${item.is_whale ? '🐋 巨鲸' : '🔥 异动'}</span>
-                    ${item.volume > 50 ? `<span class="tag reward-tag" style="background:var(--reward); color:white; font-weight:bold; font-size:11px; padding:3px 8px; border-radius:4px;">${texts.tagReward}</span>` : ''}
-                    <span style="font-size:11px; color:var(--accent); font-family:monospace;">$${item.volume}k</span>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:bold; font-size:10px; padding:2px 6px; border-radius:4px; background:${item.is_whale ? 'var(--whale)' : 'var(--hot)'}; color:#000;">${item.is_whale ? '🐋 巨鲸' : '🔥 异动'}</span>
+                    <span style="font-size:10px; color:var(--accent); font-family:monospace;">$${item.volume}k</span>
                 </div>
                 <div class="title">${item.title}</div>
                 <div class="stats-box">
-                    <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px;">${texts.prob}</div>
-                    <div style="font-size:28px; font-weight:800; color:var(--link); font-family:monospace;">${item.odds}%</div>
+                    <div style="font-size:9px; color:var(--text-dim);">${texts.prob}</div>
+                    <div style="font-size:24px; font-weight:800; color:var(--link); font-family:monospace;">${item.odds}%</div>
                 </div>
                 <div class="btn-group">
                     <a href="${item.link}?r=PolyAxiom" class="btn btn-primary" target="_blank">${texts.btnBet}</a>
@@ -252,7 +244,6 @@
         `).join('');
     }
 
-    // 分享海报逻辑（完全保留）
     async function generatePoster(index) {
         const item = currentSignalsData[index];
         const qrDiv = document.getElementById("qrcode");
@@ -263,23 +254,21 @@
         const ctx = canvas.getContext('2d');
         canvas.width = 600; canvas.height = 800;
         ctx.fillStyle = '#0d1117'; ctx.fillRect(0, 0, 600, 800);
-        ctx.font = 'bold 32px sans-serif'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
-        ctx.fillText('PolyAxiom Alpha Signal', 300, 100);
-        ctx.font = '24px sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = '#adbac7';
-        const titleText = item.title.replace(/<[^>]*>/g, '');
-        ctx.fillText(titleText.substring(0, 40) + (titleText.length > 40 ? '...' : ''), 50, 220);
-        ctx.font = 'bold 100px monospace'; ctx.fillStyle = '#58a6ff';
-        ctx.fillText(`${item.odds}%`, 50, 480);
+        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 30px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('PolyAxiom Alpha', 300, 80);
+        ctx.font = '22px sans-serif'; ctx.fillStyle = '#adbac7';
+        ctx.fillText(item.title.substring(0, 35), 300, 200);
+        ctx.font = 'bold 120px monospace'; ctx.fillStyle = '#58a6ff';
+        ctx.fillText(`${item.odds}%`, 300, 450);
         const qrCanvas = qrDiv.querySelector('canvas');
-        if(qrCanvas) ctx.drawImage(qrCanvas, 430, 630, 120, 120);
+        if(qrCanvas) ctx.drawImage(qrCanvas, 240, 620, 120, 120);
         document.getElementById('posterPreview').src = canvas.toDataURL();
         document.getElementById('posterModal').style.display = 'flex';
+        document.getElementById('posterTip').innerText = i18n[currentLang].posterTip;
     }
 
     function closeModal() { document.getElementById('posterModal').style.display = 'none'; }
-    updateUI();
-    loadSignals();
-    setInterval(loadSignals, 30000); // 30秒自动刷新一次信号
+    updateUI(); loadSignals(); setInterval(loadSignals, 30000);
 </script>
 </body>
 </html>
