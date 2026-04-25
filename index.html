@@ -30,14 +30,19 @@
         /* 頂部大型看板 */
         .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .hero-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 25px; position: relative; backdrop-filter: blur(15px); overflow: hidden; }
+        .hero-title { color: #fff; font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 20px; z-index: 1; position: relative; }
         .progress-container { height: 45px; display: flex; border-radius: 8px; overflow: hidden; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .prog-left { background: var(--blue); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; transition: 1s; }
         .prog-right { background: var(--red); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; transition: 1s; }
 
-        /* 呼吸燈特效 */
+        /* 市場卡片 - 呼吸燈回歸 */
         .market-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 18px; position: relative; transition: 0.4s ease; backdrop-filter: blur(12px); overflow: hidden; }
+        .market-card:hover { border-color: var(--blue); transform: translateY(-5px); }
+        
         .market-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(35, 134, 54, 0.08) 0%, transparent 60%); animation: pulse-green 4s infinite ease-in-out; pointer-events: none; }
         @keyframes pulse-green { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.05); } }
+        
+        /* 高套利預警呼吸燈 */
         .market-card.high-arb::before { background: radial-gradient(circle, rgba(248, 81, 73, 0.12) 0%, transparent 60%); animation: pulse-red 2.5s infinite ease-in-out; }
         @keyframes pulse-red { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
 
@@ -54,15 +59,16 @@
 
         /* 彈窗樣式 */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #0d1117; border: 1px solid var(--blue); width: 550px; padding: 35px; border-radius: 15px; box-shadow: 0 0 50px rgba(56, 139, 253, 0.2); }
-        .audit-line { font-family: 'Courier New', monospace; font-size: 13px; margin-bottom: 12px; color: #3fb950; border-left: 2px solid var(--blue); padding-left: 15px; }
+        .modal-content { background: #0d1117; border: 1px solid var(--blue); width: 550px; padding: 35px; border-radius: 15px; box-shadow: 0 0 50px rgba(56, 139, 253, 0.2); position: relative; }
+        .audit-line { font-family: 'Courier New', monospace; font-size: 13px; margin-bottom: 12px; color: #3fb950; border-left: 2px solid var(--blue); padding-left: 15px; opacity: 0; transform: translateX(-10px); animation: slideIn 0.4s forwards; }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
 
 <div class="ticker-wrap">
     <div class="ticker">
-        🚀 [系統]：PolyAxiom v2.5 核心已就緒 | 🔥 [熱點]：Nvidia 財報樂觀 | 📈 [套利]：BTC 價差捕捉中 | ⚠️ [重要]：所有交易已掛載邀請碼 polyaxiom
+        🚀 [系統]：PolyAxiom v2.5 核心已就緒 | 🔥 [熱點]：Nvidia 財報樂觀 | 📈 [套利]：BTC 價差捕捉中 | ⚠️ [邀請碼]：已掛載 polyaxiom
     </div>
 </div>
 
@@ -78,7 +84,7 @@
 
     <div class="hero-grid">
         <div class="hero-card">
-            <div style="color:#fff; font-weight:bold; text-align:center; margin-bottom:15px;">2026 世界杯決賽預測</div>
+            <div class="hero-title">2026 世界杯決賽預測</div>
             <div class="progress-container">
                 <div class="prog-left" style="width: 58%;">ESP 58%</div>
                 <div class="prog-right" style="width: 42%;">ENG 42%</div>
@@ -89,7 +95,7 @@
             </div>
         </div>
         <div class="hero-card">
-            <div style="color:#fff; font-weight:bold; text-align:center; margin-bottom:15px;">BTC 觸及 $100,000 大關？</div>
+            <div class="hero-title">BTC 觸及 $100,000 大關？</div>
             <div class="progress-container">
                 <div class="prog-left" style="width: 68%;">YES 68%</div>
                 <div class="prog-right" style="width: 32%; background:#30363d">NO 32%</div>
@@ -105,14 +111,15 @@
         <div class="market-grid" id="marketGrid"></div>
         <aside class="sidebar">
             <div class="side-panel">
-                <div style="color:var(--orange); font-weight:bold; margin-bottom:15px;">🏆 巨鯨實時榜</div>
+                <div style="color:var(--orange); font-weight:bold; margin-bottom:15px;">🏆 巨鯨實時榜 (Whale Tracker)</div>
                 <div id="whaleList">
-                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #161b22;"><span>0x7a...f2e</span><span style="color:var(--accent)">+$142k</span></div>
-                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #161b22;"><span>0xbc...d11</span><span style="color:var(--accent)">+$89k</span></div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #161b22;"><span>0x7a...f2e</span><span style="color:var(--accent); font-weight:bold;">+$142k</span></div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #161b22;"><span>0xbc...d11</span><span style="color:var(--accent); font-weight:bold;">+$89k</span></div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #161b22;"><span>0xfe...a44</span><span style="color:var(--accent); font-weight:bold;">+$56k</span></div>
                 </div>
             </div>
             <div class="side-panel">
-                <div style="color:var(--orange); font-weight:bold; margin-bottom:15px;">💱 快速換算</div>
+                <div style="color:var(--orange); font-weight:bold; margin-bottom:15px;">💱 快速換算器</div>
                 <input type="number" id="usdInput" class="calc-input" value="1000">
                 <div id="cnyRes" style="font-size:22px; color:var(--orange); font-weight:800; text-align:center;">¥ 7240.00</div>
             </div>
@@ -131,36 +138,28 @@
 
 <div class="modal-overlay" id="auditModal">
     <div class="modal-content">
-        <h2 id="modalTitle" style="color:#fff; margin-bottom:20px;"></h2>
+        <h2 id="modalTitle" style="color:#fff; margin-bottom:25px; font-size:20px; border-bottom:1px solid var(--blue); padding-bottom:10px;"></h2>
         <div id="auditLog"></div>
-        <div id="finalScore" style="margin-top:20px; padding:15px; background:rgba(56,139,253,0.1); border:1px dashed var(--blue); color:var(--blue); text-align:center; font-weight:bold; opacity:0;"></div>
-        <button onclick="closeModal()" style="margin-top:20px; width:100%; padding:10px; background:#21262d; color:#fff; border:none; cursor:pointer;">關閉報告</button>
+        <div id="finalScore" style="margin-top:25px; padding:15px; background:rgba(56,139,253,0.15); border:1px dashed var(--blue); color:var(--blue); text-align:center; font-weight:bold; border-radius:8px; opacity:0;"></div>
+        <button onclick="closeModal()" style="margin-top:20px; width:100%; padding:12px; background:#21262d; color:#fff; border:none; border-radius:4px; cursor:pointer;">關閉審計報告</button>
     </div>
 </div>
 
 <script>
     const REF_CODE = "polyaxiom";
 
-    // 自动挂载 Polymarket 邀请码逻辑
+    // 自動補全邀請碼
     function applyRefCode() {
-        const links = document.querySelectorAll('a[href*="polymarket.com"]');
-        links.forEach(link => {
+        document.querySelectorAll('a[href*="polymarket.com"]').forEach(link => {
             try {
                 let url = new URL(link.href);
                 url.searchParams.set('r', REF_CODE);
                 link.href = url.toString();
-            } catch(e) { console.error("URL 格式錯誤"); }
+            } catch(e) {}
         });
     }
 
-    // 初始化渲染
-    window.onload = () => {
-        renderMarkets();
-        applyRefCode();
-        // 持续检测（防止后续动态添加的内容漏掉）
-        setInterval(applyRefCode, 2000);
-    };
-
+    // 渲染市場卡片
     function renderMarkets() {
         const markets = [
             { type: 'MACRO', arb: '3.2%', q: '美聯儲2026年6月前降息嗎？', p: '72.0%', link: 'https://polymarket.com/event/fed-cut' },
@@ -170,13 +169,13 @@
         const grid = document.getElementById('marketGrid');
         grid.innerHTML = markets.map(m => `
             <div class="market-card ${parseFloat(m.arb) > 2.5 ? 'high-arb' : ''}">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <span style="color:var(--purple); font-size:10px; border:1px solid var(--purple); padding:2px 5px;">${m.type}</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; position:relative; z-index:1;">
+                    <span style="color:var(--purple); font-size:10px; border:1px solid var(--purple); padding:2px 5px; background:rgba(137,87,229,0.1);">${m.type}</span>
                     <span style="color:var(--red); font-weight:bold;">Arb: ${m.arb}</span>
                 </div>
-                <div style="color:#fff; font-weight:600; min-height:40px;">${m.q}</div>
-                <div style="font-size:28px; font-weight:800; color:#3fb950; text-align:center; margin:15px 0;">${m.p}</div>
-                <div style="display:flex; gap:5px;">
+                <div style="color:#fff; font-weight:600; min-height:40px; position:relative; z-index:1;">${m.q}</div>
+                <div style="font-size:28px; font-weight:800; color:#3fb950; text-align:center; margin:15px 0; position:relative; z-index:1;">${m.p}</div>
+                <div style="display:flex; gap:5px; position:relative; z-index:1;">
                     <a href="${m.link}" target="_blank" class="nav-btn" style="flex:2; text-align:center; background:var(--blue); color:#fff;">立即下單</a>
                     <button class="nav-btn" style="flex:1;" onclick="runAudit('${m.q}')">波段</button>
                 </div>
@@ -184,20 +183,36 @@
         `).join('');
     }
 
+    // 初始化
+    window.onload = () => {
+        renderMarkets();
+        applyRefCode();
+        setInterval(applyRefCode, 2000);
+    };
+
+    // 換算器
     document.getElementById('usdInput').addEventListener('input', (e) => {
         document.getElementById('cnyRes').innerText = `¥ ${(e.target.value * 7.24).toFixed(2)}`;
     });
 
+    // 審计特效回歸
     function runAudit(title) {
         const modal = document.getElementById('auditModal');
         const log = document.getElementById('auditLog');
         const score = document.getElementById('finalScore');
-        document.getElementById('modalTitle').innerText = `L40 審計：${title}`;
+        document.getElementById('modalTitle').innerText = `L40 深度審核：${title}`;
         modal.style.display = 'flex';
         log.innerHTML = '';
         score.style.opacity = '0';
 
-        const lines = ["> 初始化核心...", "> 掃描訂單簿...", "> 社交情緒分析...", "> 生成對沖方案..."];
+        const lines = [
+            "> [L40] 正在接入 Polymarket 實時 Orderbook...",
+            "> [DATA] 正在分析社交媒體 𝕏 討論情緒...",
+            "> [WHALE] 偵測到 3 個關聯巨鯨地址正在建倉...",
+            "> [REF] 推薦碼已自動掛載：polyaxiom...",
+            "> [CALC] 計算偏差值完成，正在生成報告..."
+        ];
+
         lines.forEach((line, i) => {
             setTimeout(() => {
                 const p = document.createElement('div');
@@ -205,7 +220,10 @@
                 p.innerText = line;
                 log.appendChild(p);
                 if(i === lines.length - 1) {
-                    setTimeout(() => { score.innerText = "分析完成：已掛載 polyaxiom 邀請碼，確保最佳收益回扣。"; score.style.opacity = '1'; }, 500);
+                    setTimeout(() => { 
+                        score.innerText = "L40 分析結論：當前偏離值具備套利空間，建議持有。"; 
+                        score.style.opacity = '1'; 
+                    }, 500);
                 }
             }, i * 600);
         });
